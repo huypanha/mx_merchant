@@ -1,41 +1,25 @@
-import 'package:mx_merchant/src/models/payment/get_payment_request_model.dart';
-import 'package:mx_merchant/src/models/payment/payment_response_model.dart';
+import 'package:mx_merchant/mx_merchant.dart';
 
-import '../models/payment/get_a_payment_response_model.dart';
-import '../models/payment/get_payment_response_model.dart';
-import '../models/payment/payment_request_model.dart';
+import '../models/terminal/terminal_model.dart';
 
-/// The full documentation can be found here: https://developer.mxmerchant.com/reference/payment-overview-1
-abstract class MxPaymentService {
-  /// The full documentation can be found here: https://developer.mxmerchant.com/reference/post-payment
-  Future<MxPaymentResponseModel> makePayment(MxPaymentRequestModel payment) async {
+/// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-overview
+abstract class MxTerminalService {
+  /// The full documentation can be found here: https://developer.mxmerchant.com/reference/get-list-of-terminals
+  Future<List<MxTerminalModel>> getListOfTerminals() async {
     throw UnimplementedError();
   }
 
-  /// The full documentation can be found here: https://developer.mxmerchant.com/reference/get-payment
-  Future<MxGetPaymentResponseModel> getPayments(MxGetPaymentRequestModel payment) async {
+  /// The full documentation can be found here:
+  /// 1. https://developer.mxmerchant.com/reference/create-terminal
+  /// 2. https://developer.mxmerchant.com/reference/create-terminal-anywherecommerce
+  /// 3. https://developer.mxmerchant.com/reference/create-terminal-dejavoo
+  Future createTerminal(MxTerminalRequestModel request) async {
     throw UnimplementedError();
   }
 
-  /// The full documentation can be found here: https://developer.mxmerchant.com/reference/get-a-payment
-  /// * [paymentId]: The ID of the payment to retrieve
-  /// * [includeCustomer]: Whether to include the customer information in the response
-  Future<MxGetAPaymentResponseModel> getAPayment(String paymentId, {bool includeCustomer = true}) async {
-    throw UnimplementedError();
-  }
-
-  /// The full documentation can be found here: https://developer.mxmerchant.com/reference/void-a-payment
-  /// * [paymentId]: The id of the payment
-  /// * [force]: Force a refund if transaction has already settled
-  Future<bool> voidAPayment(String paymentId, {bool? force}) async {
-    throw UnimplementedError();
-  }
-
-  /// The full documentation can be found here: https://developer.mxmerchant.com/reference/send-a-payment-receipt
-  /// * [paymentId]: The id of the payment
-  /// * [contact]: For email provide email address and for text provide phone number
-  /// * [force]: Force a refund if transaction has already settled
-  Future<bool> sendAPaymentReceipt({required String paymentId, required String contact, bool? ignoreBcc}) async {
+  /// The full documentation can be found here: https://developer.mxmerchant.com/reference/delete-terminal
+  /// * terminalId: The terminal ID to delete. The identification number from the MX Merchant system for the terminal/device.
+  Future<bool> deleteTerminal(String terminalId) async {
     throw UnimplementedError();
   }
 }

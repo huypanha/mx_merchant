@@ -1,54 +1,38 @@
-import 'package:mx_merchant/src/models/payment/get_payment_request_model.dart';
-import 'package:mx_merchant/src/models/payment/get_payment_response_model.dart';
+import 'package:mx_merchant/src/models/terminal/terminal_model.dart';
 import 'package:mx_merchant/src/services/api_service.dart';
-import 'package:mx_merchant/src/services/payment_service.dart';
+import 'package:mx_merchant/src/services/terminal_service.dart';
+import 'package:mx_merchant/src/utils/handle_response.dart';
 
-import '../models/payment/get_a_payment_response_model.dart';
-import '../models/payment/payment_request_model.dart';
-import '../models/payment/payment_response_model.dart';
+import '../models/terminal/terminal_request_model.dart';
 
-class MxPaymentServiceImpl implements MxPaymentService {
+class MxTerminalServiceImpl implements MxTerminalService {
   late ApiService _apiService;
-  final String _route = 'checkout/v3/payments';
+  String _routeV1 = 'terminal/v1';
 
-  MxPaymentServiceImpl(ApiService apiService) {
+  MxTerminalServiceImpl(ApiService apiService) {
     _apiService = apiService;
+    _routeV1 += '/merchantid/${_apiService.merchantId}';
   }
 
   @override
-  Future<MxPaymentResponseModel> makePayment(MxPaymentRequestModel payment) async {
-    final data = payment.toBodyJson();
-    data['merchantId'] = _apiService.merchantId;
-    final response = await _apiService.post(_route, data: data, query: payment.toQueryJson());
-    return MxPaymentResponseModel.fromJson(response);
+  Future<List<MxTerminalModel>> getListOfTerminals() async {
+    final response = await _apiService.get<List>(_routeV1, authToken: .jwt, baseUrlVersion: .v2);
+    return MxTerminalModel.fromJsonArray(response);
   }
 
   @override
-  Future<MxGetPaymentResponseModel> getPayments(MxGetPaymentRequestModel request) async {
-    final data = request.toJson();
-    data['merchantId'] = int.tryParse(_apiService.merchantId) ?? 0;
-    final response = await _apiService.get(_route, query: data);
-    return MxGetPaymentResponseModel.fromJson(response);
-  }
-
-  @override
-  Future<MxGetAPaymentResponseModel> getAPayment(String paymentId, {bool includeCustomer = true}) async {
-    final response = await _apiService.get("$_route/$paymentId", query: {'includeCustomer': includeCustomer});
-    return MxGetAPaymentResponseModel.fromJson(response);
-  }
-
-  @override
-  Future<bool> voidAPayment(String paymentId, {bool? force}) async {
-    final response = await _apiService.delete("$_route/$paymentId", query: {'force': force}..removeWhere((_, v) => v == null));
-    return response;
-  }
-
-  @override
-  Future<bool> sendAPaymentReceipt({required String paymentId, required String contact, bool? ignoreBcc}) async {
-    await _apiService.post(
-      'checkout/v3/paymentreceipt',
-      query: {'id': paymentId, 'contact': contact, 'ignoreBcc': ignoreBcc}..removeWhere((_, v) => v == null),
+  Future<dynamic> createTerminal(MxTerminalRequestModel request) async {
+    final response = await _apiService.post(
+      '$_routeV1/providerkey/${request.providerKey}',
+      data: request.toJson(),
+      authToken: .jwt,
+      baseUrlVersion: .v2,
     );
-    return true;
+    return handleResponse(response);
+  }
+
+  @override
+  Future<bool> deleteTerminal(String terminalId) async {
+    return await _apiService.delete('$_routeV1/terminalid/$terminalId', authToken: .jwt, baseUrlVersion: .v2);
   }
 }

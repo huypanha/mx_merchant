@@ -9,7 +9,7 @@ import '../models/payment/payment_response_model.dart';
 
 class MxPaymentServiceImpl implements MxPaymentService {
   late ApiService _apiService;
-  final String _route = 'payments';
+  final String _route = 'checkout/v3/payments';
 
   MxPaymentServiceImpl(ApiService apiService) {
     _apiService = apiService;
@@ -20,7 +20,7 @@ class MxPaymentServiceImpl implements MxPaymentService {
     final data = payment.toBodyJson();
     data['merchantId'] = _apiService.merchantId;
     final response = await _apiService.post(_route, data: data, query: payment.toQueryJson());
-    return MxPaymentResponseModel.fromJson(response);
+    return MxPaymentResponseModel.fromJson(Map<String, dynamic>.from(response));
   }
 
   @override
@@ -28,13 +28,13 @@ class MxPaymentServiceImpl implements MxPaymentService {
     final data = request.toJson();
     data['merchantId'] = int.tryParse(_apiService.merchantId) ?? 0;
     final response = await _apiService.get(_route, query: data);
-    return MxGetPaymentResponseModel.fromJson(response);
+    return MxGetPaymentResponseModel.fromJson(Map<String, dynamic>.from(response));
   }
 
   @override
   Future<MxGetAPaymentResponseModel> getAPayment(String paymentId, {bool includeCustomer = true}) async {
     final response = await _apiService.get("$_route/$paymentId", query: {'includeCustomer': includeCustomer});
-    return MxGetAPaymentResponseModel.fromJson(response);
+    return MxGetAPaymentResponseModel.fromJson(Map<String, dynamic>.from(response));
   }
 
   @override
@@ -45,7 +45,10 @@ class MxPaymentServiceImpl implements MxPaymentService {
 
   @override
   Future<bool> sendAPaymentReceipt({required String paymentId, required String contact, bool? ignoreBcc}) async {
-    await _apiService.post(_route, query: {'id': paymentId, 'contact': contact, 'ignoreBcc': ignoreBcc}..removeWhere((_, v) => v == null));
+    await _apiService.post(
+      'checkout/v3/paymentreceipt',
+      query: {'id': paymentId, 'contact': contact, 'ignoreBcc': ignoreBcc}..removeWhere((_, v) => v == null),
+    );
     return true;
   }
 }

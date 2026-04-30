@@ -29,7 +29,7 @@ enum MxPaymentTransactionType {
   saleCompletion('SaleCompletion'),
   paymentTransaction('PaymentTransaction'),
   withdrawal('Withdrawal'),
-  Refund('Refund'),
+  refund('Refund'),
   balance('Balance');
 
   final String name;
@@ -189,3 +189,7 @@ enum MxFilterDateType {
   final String name;
   const MxFilterDateType(this.name);
 }
+
+enum MxAuthToken { basic, jwt }
+
+enum MxBaseUrlVersion { v1, v2 }

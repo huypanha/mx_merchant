@@ -62,6 +62,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
     final sendPaymentReceiptResult = await merchant.payment.sendAPaymentReceipt(paymentId: paymentResult.id.toString(), contact: 'your@mail.com');
     log('sendPaymentReceiptResult = $sendPaymentReceiptResult');
+
+    final terminalResult = await merchant.terminal.getListOfTerminals();
+    log('terminalResult = ${terminalResult.map((e) => e.toJson())}');
+
+    final createTerminalResult = await merchant.terminal.createTerminal(MxTerminalRequestModel(providerKey: 'dejavoo'));
+    log('createTerminalResult = $createTerminalResult');
+
+    final deleteTerminalResult = await merchant.terminal.deleteTerminal('terminalId');
+    log('deleteTerminalResult = $deleteTerminalResult');
   }
 
   @override

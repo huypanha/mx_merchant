@@ -14,8 +14,8 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  collection: any
-  dio: any
+  collection: ^1.19.1
+  dio: ^5.9.2
 
 dev_dependencies:
   flutter_test:

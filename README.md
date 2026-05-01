@@ -180,7 +180,7 @@ print('Terminal deleted: $deleted');
 
 ```dart
 // Create a new terminal transaction
-final transactionResult = await merchant.terminalTransaction.createTransaction(
+final transactionResult = await merchant.terminal.transaction.createTransaction(
   MxTerminalCreateTransactionRequestModel(
     terminalId: 'terminal_123',
     amount: 25.50,
@@ -194,7 +194,7 @@ print('Transaction Status: ${transactionResult.status}');
 print('Transaction Message: ${transactionResult.message}');
 
 // Update an existing terminal transaction
-await merchant.terminalTransaction.updateTransaction(
+await merchant.terminal.transaction.updateTransaction(
   MxTerminalUpdateTransactionRequestModel(
     reference: 'ref_12345',
     terminalId: 'terminal_123',
@@ -203,10 +203,10 @@ await merchant.terminalTransaction.updateTransaction(
 );
 
 // Get transaction details by replay ID
-final transactionDetails = await merchant.terminalTransaction.getTransaction('123456789012345');
+final transactionDetails = await merchant.terminal.transaction.getTransaction('123456789012345');
 
 // Delete a terminal transaction
-final deleted = await merchant.terminalTransaction.deleteTransaction('terminal_123');
+final deleted = await merchant.terminal.transaction.deleteTransaction('terminal_123');
 print('Transaction deleted: $deleted');
 ```
 

@@ -1,9 +1,12 @@
 import 'package:mx_merchant/mx_merchant.dart';
 
 import '../models/terminal/terminal_model.dart';
+import 'terminal_transaction_service.dart';
 
 /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-overview
 abstract class MxTerminalService {
+  MxTerminalTransactionService get transaction;
+
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/get-list-of-terminals
   Future<List<MxTerminalModel>> getListOfTerminals() async {
     throw UnimplementedError();

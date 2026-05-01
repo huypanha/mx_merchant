@@ -6,6 +6,9 @@ import '../bank/bank_account_model.dart';
 import '../card/card_model.dart';
 import '../customer/customer_model.dart';
 
+/// This API can make payments, delete payments, and get information on created payments.
+/// This API can be used by anyone who is interested in online payments.
+/// This can be used by new businesses going into the online market or local businesses that want to move their business online.
 class MxPaymentRequestModel {
   /// The payment amount. Must not be 0.
   final double amount;

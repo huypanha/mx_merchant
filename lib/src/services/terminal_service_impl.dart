@@ -1,17 +1,23 @@
 import 'package:mx_merchant/src/models/terminal/terminal_model.dart';
 import 'package:mx_merchant/src/services/api_service.dart';
 import 'package:mx_merchant/src/services/terminal_service.dart';
+import 'package:mx_merchant/src/services/terminal_transaction_service.dart';
+import 'package:mx_merchant/src/services/terminal_transaction_service_impl.dart';
 import 'package:mx_merchant/src/utils/handle_response.dart';
 
 import '../models/terminal/terminal_request_model.dart';
 
 class MxTerminalServiceImpl implements MxTerminalService {
   late ApiService _apiService;
-  String _routeV1 = 'terminal/v1';
+  String _routeV1 = 'terminal/v1/';
+
+  @override
+  late MxTerminalTransactionService transaction;
 
   MxTerminalServiceImpl(ApiService apiService) {
     _apiService = apiService;
-    _routeV1 += '/merchantid/${_apiService.merchantId}';
+    _routeV1 += 'merchantid/${_apiService.merchantId}';
+    transaction = MxTerminalTransactionServiceImpl(_apiService);
   }
 
   @override

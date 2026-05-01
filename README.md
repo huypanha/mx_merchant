@@ -5,12 +5,8 @@ A comprehensive Flutter/Dart client package for integrating with the MX Merchant
 ## Features
 
 - 💳 **Payment Processing**: Process credit card, ACH, and check payments
-- 🔒 **Enhanced Authentication**: Support for both Basic and JWT authentication methods
 - 🖥️ **Terminal Management**: Create, list, and manage payment terminal devices
-- 👥 **Customer Management**: Create and manage customer profiles
-- 🏦 **Vaulted Accounts**: Store and manage payment methods securely
-- 📊 **Reporting**: Access transaction reports and analytics
-- 🌐 **Multi-API Support**: Support for both v1 and v2 MX Merchant APIs
+- 🔄 **Terminal Transactions**: Create, update, retrieve, and delete terminal transactions
 - 📱 **Cross-Platform**: Works on Android, iOS, macOS, Windows, Linux, and Web
 - 🎯 **Type Safety**: Full Dart type safety with comprehensive models
 - 📧 **Receipt Management**: Send payment receipts via email or SMS
@@ -21,7 +17,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  mx_merchant: ^0.0.1-beta.3
+  mx_merchant: <latest version>
 ```
 
 Then run:
@@ -180,6 +176,40 @@ final deleted = await merchant.terminal.deleteTerminal('terminal_id_here');
 print('Terminal deleted: $deleted');
 ```
 
+### Terminal Transactions
+
+```dart
+// Create a new terminal transaction
+final transactionResult = await merchant.terminalTransaction.createTransaction(
+  MxTerminalCreateTransactionRequestModel(
+    terminalId: 'terminal_123',
+    amount: 25.50,
+    type: .sale,
+    vaultCard: false,
+    replayId: '123456789012345', // Optional 15-digit unique string
+  ),
+);
+
+print('Transaction Status: ${transactionResult.status}');
+print('Transaction Message: ${transactionResult.message}');
+
+// Update an existing terminal transaction
+await merchant.terminalTransaction.updateTransaction(
+  MxTerminalUpdateTransactionRequestModel(
+    reference: 'ref_12345',
+    terminalId: 'terminal_123',
+    transactionId: 'txn_67890',
+  ),
+);
+
+// Get transaction details by replay ID
+final transactionDetails = await merchant.terminalTransaction.getTransaction('123456789012345');
+
+// Delete a terminal transaction
+final deleted = await merchant.terminalTransaction.deleteTransaction('terminal_123');
+print('Transaction deleted: $deleted');
+```
+
 ## API Reference
 
 ### Payment Service Methods
@@ -196,21 +226,18 @@ print('Terminal deleted: $deleted');
 - `createTerminal()` - Create a new payment terminal
 - `deleteTerminal()` - Delete an existing terminal
 
+### Terminal Transaction Service Methods
+
+- `createTransaction()` - Create a new terminal transaction with customizable parameters
+- `updateTransaction()` - Update an existing terminal transaction by reference and terminal ID
+- `getTransaction()` - Retrieve transaction details using replay ID
+- `deleteTransaction()` - Delete a terminal transaction by terminal ID
+
 ### Supported Payment Types
 
 - **Credit/Debit Cards**: Visa, Mastercard, American Express, Discover
 - **ACH Payments**: Direct bank transfers
 - **Check Payments**: Electronic check processing
-
-### Authentication Methods
-
-- **Basic Authentication**: Used for payment processing (v1 API)
-- **JWT Authentication**: Used for terminal management (v2 API)
-
-### API Versions
-
-- **v1 API**: Primary checkout and payment processing
-- **v2 API**: Terminal management and advanced features
 
 ### Environment Configuration
 
@@ -276,8 +303,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - Always use environment variables or secure storage for sensitive data
 - Use sandbox environment for testing and development
 - Implement proper error handling and logging
-- JWT tokens are automatically managed for v2 API calls
-- Basic authentication is used for v1 payment operations
 
 ### Topics
 

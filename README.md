@@ -59,17 +59,20 @@ final merchant = MxMerchant(
 // Process a credit card payment
 final paymentResult = await merchant.payment.makePayment(
   MxPaymentRequestModel(
-    amount: 10.99,
+    amount: 99.99,
     tenderType: .card,
     paymentType: .sale,
     cardAccount: MxCardModel(
       number: '4242424242424242',
       expiryMonth: '12',
-      expiryYear: '2025',
+      expiryYear: (DateTime.now().year + 1).toString(),
       cvv: '123',
+      avsZip: '12345',
+      avsStreet: 'Cambodia',
     ),
-    customerName: 'Huy Panha',
-    customerCode: 'CUST001',
+    customerName: 'Test Customer',
+    customerCode: 'TEST001',
+    replayId: 99,
     source: .api,
   ),
 );
@@ -86,6 +89,7 @@ final payments = await merchant.payment.getPayments(
   MxGetPaymentRequestModel(
     status: .approved,
     dateType: .today,
+    limit: 10,
   ),
 );
 

@@ -115,13 +115,6 @@ class MxPaymentRequestModel {
   /// You must set up the tag first in MX Merchant.
   final List<String>? tags;
 
-  /// If you would like to get the response object, you should supply `echo = true` as a URL parameter.
-  /// This is useful as it keeps the user from having to use a GET call to see the response object information.
-  final bool echo;
-
-  /// Return customers that have this card vaulted in their account
-  final bool includeCustomerMatches;
-
   const MxPaymentRequestModel({
     required this.amount,
     required this.tenderType,
@@ -156,8 +149,6 @@ class MxPaymentRequestModel {
     this.vatAmount,
     this.vatRate,
     this.tags,
-    this.echo = false,
-    this.includeCustomerMatches = false,
   }) : assert(amount > 0, 'Amount must be greater than 0'),
        assert(tenderType != MxPaymentTenderType.card || cardAccount != null, 'cardAccount is required when tenderType is card'),
        assert(
@@ -206,7 +197,7 @@ class MxPaymentRequestModel {
     'tags': tags,
   }..removeWhere((_, value) => value == null);
 
-  Map<String, dynamic> toQueryJson() => {'echo': echo, 'includeCustomerMatches': includeCustomerMatches};
+  Map<String, dynamic> toQueryJson() => {'echo': true, 'includeCustomerMatches': true};
 
   factory MxPaymentRequestModel.fromJson(Map<String, dynamic> json) {
     return MxPaymentRequestModel(

@@ -38,11 +38,11 @@ class MxPurchaseModel {
 
   factory MxPurchaseModel.fromJson(Map<String, dynamic> json) {
     return MxPurchaseModel(
-      code: json['code'],
+      code: (json['code'] ?? '').toString(),
       description: json['description'],
       unitPrice: json['unitPrice'] != null ? double.tryParse(json['unitPrice'].toString()) : null,
       quantity: json['quantity'] != null ? int.tryParse(json['unitPrice'].toString()) : null,
-      unitOfMeasure: json['unitOfMeasure'],
+      unitOfMeasure: (json['unitOfMeasure'] ?? '').toString(),
       taxRate: json['taxRate'] != null ? double.tryParse(json['taxRate'].toString()) : null,
       taxAmount: json['taxAmount'] != null ? double.tryParse(json['taxAmount'].toString()) : null,
       discountRate: json['discountRate'] != null ? double.tryParse(json['discountRate'].toString()) : null,

@@ -1,7 +1,7 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:dio/dio.dart';
-import 'package:mx_merchant/src/utils/handle_response.dart';
 
 import '../utils/enums.dart';
 
@@ -37,17 +37,20 @@ class ApiService {
     final basicAuth = base64Encode(utf8.encode('$consumerKey:$consumerSecret'));
     _basicToken = 'Basic $basicAuth';
     _dio = Dio(BaseOptions(headers: {'Content-Type': 'application/json', 'Accept': 'application/json'}))
-      ..options.headers['Authorization'] = 'Basic $basicAuth';
+      ..options.headers['Authorization'] = 'Basic $basicAuth'
+      ..options.validateStatus = (s) => true;
   }
 
   void _setBasicToken() {
     _dio.options.headers['Authorization'] = _basicToken;
+    log('Token = "$_basicToken"');
   }
 
   Future _setJWTToken() async {
     _jwtToken ??= await _getJWTToken();
     _jwtToken = 'Bearer ${base64Encode(utf8.encode('$consumerKey:$consumerSecret'))}';
     _dio.options.headers['Authorization'] = _jwtToken;
+    log('Token = "$_jwtToken"');
   }
 
   Future<String> _getJWTToken() async {
@@ -57,7 +60,7 @@ class ApiService {
     return jsonDecode(json)['jwtToken'];
   }
 
-  Future<T> get<T>(
+  Future<Response> get(
     String path, {
     Map<String, dynamic>? query,
     Object? data,
@@ -75,11 +78,10 @@ class ApiService {
     } else {
       baseUrl = _baseUrlV2;
     }
-    final res = await _dio.get("$baseUrl$path", queryParameters: query, data: data);
-    return handleResponse<T>(res);
+    return await _dio.get("$baseUrl$path", queryParameters: query, data: data);
   }
 
-  Future<T> post<T>(
+  Future<Response> post(
     String path, {
     Map<String, dynamic>? query,
     Object? data,
@@ -97,11 +99,10 @@ class ApiService {
     } else {
       baseUrl = _baseUrlV2;
     }
-    final res = await _dio.post("$baseUrl$path", queryParameters: query, data: data);
-    return handleResponse<T>(res);
+    return await _dio.post("$baseUrl$path", queryParameters: query, data: data);
   }
 
-  Future<bool> delete(
+  Future<Response> delete(
     String path, {
     Map<String, dynamic>? query,
     Object? data,
@@ -119,14 +120,10 @@ class ApiService {
     } else {
       baseUrl = _baseUrlV2;
     }
-    final res = await _dio.delete("$baseUrl$path", queryParameters: query, data: data);
-    if (res.statusCode! < 500) {
-      return true;
-    }
-    return false;
+    return await _dio.delete("$baseUrl$path", queryParameters: query, data: data);
   }
 
-  Future<T> put<T>(
+  Future<Response> put(
     String path, {
     Map<String, dynamic>? query,
     Object? data,
@@ -144,7 +141,6 @@ class ApiService {
     } else {
       baseUrl = _baseUrlV2;
     }
-    final res = await _dio.put("$baseUrl$path", queryParameters: query, data: data);
-    return handleResponse<T>(res);
+    return await _dio.put("$baseUrl$path", queryParameters: query, data: data);
   }
 }

@@ -3,9 +3,9 @@ import 'package:mx_merchant/src/services/api_service.dart';
 import 'package:mx_merchant/src/services/terminal_service.dart';
 import 'package:mx_merchant/src/services/terminal_transaction_service.dart';
 import 'package:mx_merchant/src/services/terminal_transaction_service_impl.dart';
-import 'package:mx_merchant/src/utils/handle_response.dart';
 
 import '../models/terminal/terminal_request_model.dart';
+import '../utils/mx_merchant_exception.dart';
 
 class MxTerminalServiceImpl implements MxTerminalService {
   late ApiService _apiService;
@@ -22,8 +22,16 @@ class MxTerminalServiceImpl implements MxTerminalService {
 
   @override
   Future<List<MxTerminalModel>> getListOfTerminals() async {
-    final response = await _apiService.get<List>(_routeV1, authToken: .jwt, baseUrlVersion: .v2);
-    return MxTerminalModel.fromJsonArray(response);
+    final response = await _apiService.get(_routeV1, authToken: .jwt, baseUrlVersion: .v2);
+    if (response.statusCode == 200) {
+      return MxTerminalModel.fromJsonArray(response.data);
+    } else {
+      throw MxMerchantException(
+        statusCode: response.statusCode ?? 500,
+        message: response.data['message']?.toString() ?? 'MX Merchant API error',
+        response: response.data,
+      );
+    }
   }
 
   @override
@@ -34,11 +42,28 @@ class MxTerminalServiceImpl implements MxTerminalService {
       authToken: .jwt,
       baseUrlVersion: .v2,
     );
-    return handleResponse(response);
+    if (response.statusCode == 200) {
+      return response.data;
+    } else {
+      throw MxMerchantException(
+        statusCode: response.statusCode ?? 500,
+        message: response.data['message']?.toString() ?? 'MX Merchant API error',
+        response: response.data,
+      );
+    }
   }
 
   @override
   Future<bool> delete(String terminalId) async {
-    return await _apiService.delete('$_routeV1/terminalid/$terminalId', authToken: .jwt, baseUrlVersion: .v2);
+    final response = await _apiService.delete('$_routeV1/terminalid/$terminalId', authToken: .jwt, baseUrlVersion: .v2);
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      throw MxMerchantException(
+        statusCode: response.statusCode ?? 500,
+        message: response.data['message']?.toString() ?? 'MX Merchant API error',
+        response: response.data,
+      );
+    }
   }
 }

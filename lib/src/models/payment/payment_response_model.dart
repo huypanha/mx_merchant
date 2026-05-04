@@ -1,8 +1,5 @@
 import 'package:collection/collection.dart';
-import 'package:mx_merchant/src/models/card/card_response_model.dart';
-import 'package:mx_merchant/src/models/customer/customer_response_model.dart';
-import 'package:mx_merchant/src/models/payment/risk_model.dart';
-import 'package:mx_merchant/src/utils/enums.dart';
+import 'package:mx_merchant/mx_merchant.dart';
 
 class MxPaymentResponseModel {
   final String? created;
@@ -12,11 +9,11 @@ class MxPaymentResponseModel {
   final int merchantId;
   final String? batch;
   final int batchId;
-  final String? tenderType;
+  final MxPaymentTenderType? tenderType;
   final String? currency;
   final String? amount;
   final MxCardResponseModel? cardAccount;
-  final Map<String, dynamic>? posData;
+  final MxPosDataModel? posData;
   final bool authOnly;
   final String? authCode;
   final MxPaymentResponseStatus? status;
@@ -33,9 +30,9 @@ class MxPaymentResponseModel {
   final String? invoice;
   final String? clientReference;
   final String? replayId;
-  final String? type;
+  final MxPaymentTransactionType? type;
   final int reviewIndicator;
-  final String? source;
+  final MxPaymentSource? source;
 
   const MxPaymentResponseModel({
     this.created,
@@ -73,18 +70,18 @@ class MxPaymentResponseModel {
 
   factory MxPaymentResponseModel.fromJson(Map<String, dynamic> json) {
     return MxPaymentResponseModel(
-      created: json['created'],
+      created: json['created'].toString(),
       paymentToken: json['paymentToken'],
       id: int.tryParse(json['id'].toString()) ?? 0,
       creatorName: json['creatorName'],
       merchantId: int.tryParse(json['merchantId'].toString()) ?? 0,
       batch: json['batch'],
       batchId: int.tryParse(json['batchId'].toString()) ?? 0,
-      tenderType: json['tenderType'],
+      tenderType: json['tenderType'] != null ? MxPaymentTenderType.values.firstWhereOrNull((e) => e.name == json['tenderType']) : null,
       currency: json['currency'],
-      amount: json['amount'],
+      amount: json['amount'].toString(),
       cardAccount: json['cardAccount'] == null ? null : MxCardResponseModel.fromJson(json['cardAccount']),
-      posData: json['posData'] != null ? Map<String, dynamic>.from(json['posData']) : null,
+      posData: json['posData'] != null ? MxPosDataModel.fromJson(json['posData']) : null,
       authOnly: bool.tryParse(json['authOnly'].toString()) ?? true,
       authCode: json['authCode'],
       status: json['status'] == null ? null : MxPaymentResponseStatus.values.firstWhereOrNull((e) => e.name == json['status']),
@@ -92,18 +89,18 @@ class MxPaymentResponseModel {
       risk: json['risk'] == null ? null : MxRiskModel.fromJson(json['risk'] as Map<String, dynamic>),
       requireSignature: bool.tryParse(json['requireSignature'].toString()) ?? true,
       customer: json['customer'] == null ? null : MxCustomerResponseModel.fromJson(json['customer'] as Map<String, dynamic>),
-      settledAmount: json['settledAmount'],
+      settledAmount: json['settledAmount'].toString(),
       settledCurrency: json['settledCurrency'],
       authMessage: json['authMessage'],
-      availableAuthAmount: json['availableAuthAmount'],
-      reference: json['reference'],
+      availableAuthAmount: (json['availableAuthAmount'] ?? '').toString(),
+      reference: json['reference'].toString(),
       tax: json['tax'],
       invoice: json['invoice'],
       clientReference: json['clientReference'],
-      replayId: json['replayId'],
-      type: json['type'],
+      replayId: (json['replayId'] ?? '').toString(),
+      type: json['type'] != null ? MxPaymentTransactionType.values.firstWhereOrNull((e) => e.name == json['type']) : null,
       reviewIndicator: int.tryParse(json['merchantId'].toString()) ?? 0,
-      source: json['source'],
+      source: json['source'] != null ? MxPaymentSource.values.firstWhereOrNull((e) => e.name == json['source']) : null,
     );
   }
 
@@ -115,14 +112,14 @@ class MxPaymentResponseModel {
     'merchantId': merchantId,
     'batch': batch,
     'batchId': batchId,
-    'tenderType': tenderType,
+    'tenderType': tenderType?.name,
     'currency': currency,
     'amount': amount,
     'cardAccount': cardAccount?.toJson(),
-    'posData': posData,
+    'posData': posData?.toJson(),
     'authOnly': authOnly,
     'authCode': authCode,
-    'status': status,
+    'status': status?.name,
     'meta': meta,
     'risk': risk?.toJson(),
     'requireSignature': requireSignature,
@@ -136,8 +133,8 @@ class MxPaymentResponseModel {
     'invoice': invoice,
     'clientReference': clientReference,
     'replayId': replayId,
-    'type': type,
+    'type': type?.name,
     'reviewIndicator': reviewIndicator,
-    'source': source,
+    'source': source?.name,
   }..removeWhere((_, value) => value == null);
 }

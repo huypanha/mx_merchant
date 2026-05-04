@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:mx_merchant/mx_merchant.dart';
 
 void main() {
@@ -44,9 +46,9 @@ class MXMerchantHomePage extends StatefulWidget {
 class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProviderStateMixin {
   late final TabController _tabController;
 
-  final _consumerKeyController = TextEditingController();
-  final _consumerSecretController = TextEditingController();
-  final _merchantIdController = TextEditingController();
+  final _consumerKeyController = TextEditingController(text: '');
+  final _consumerSecretController = TextEditingController(text: '');
+  final _merchantIdController = TextEditingController(text: '');
 
   bool _isLoading = false;
   String _lastResult = '';
@@ -107,36 +109,49 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       // Make Payment
       final paymentResult = await merchant.payment.makePayment(
         MxPaymentRequestModel(
-          amount: 1.00,
+          amount: 12.00,
           tenderType: .card,
           paymentType: .sale,
-          cardAccount: MxCardModel(number: '4242424242424242', expiryMonth: '12', expiryYear: (DateTime.now().year + 1).toString(), cvv: '123'),
+          cardAccount: MxCardModel(
+            number: '4242424242424242',
+            expiryMonth: '12',
+            expiryYear: (DateTime.now().year + 1).toString(),
+            cvv: '123',
+            avsZip: '12345',
+            avsStreet: 'Cambodia',
+          ),
           customerName: 'Test Customer',
           customerCode: 'TEST001',
-          replayId: 1,
+          replayId: 12,
           source: .api,
         ),
       );
       results['payment'] = paymentResult.toJson();
+      log("payment = ${results['payment']}");
 
       // Get Payments
-      final getPaymentsResult = await merchant.payment.getPayments(MxGetPaymentRequestModel());
+      final getPaymentsResult = await merchant.payment.getPayments(MxGetPaymentRequestModel(limit: 2));
       results['getPayments'] = getPaymentsResult.toJson();
+      log("getPayments = ${results['getPayments']}");
 
       // Get Specific Payment
       final getAPaymentResult = await merchant.payment.getAPayment(paymentResult.id.toString(), includeCustomer: true);
       results['getAPayment'] = getAPaymentResult.toJson();
+      log("getAPayment = ${results['getAPayment']}");
 
       // Void Payment
       final voidResult = await merchant.payment.voidAPayment(paymentResult.id.toString(), force: true);
       results['voidPayment'] = voidResult;
+      log("voidPayment = ${results['voidPayment']}");
 
       // Send Receipt
-      final receiptResult = await merchant.payment.sendAPaymentReceipt(paymentId: paymentResult.id.toString(), contact: 'test@example.com');
+      final receiptResult = await merchant.payment.sendAPaymentReceipt(paymentId: paymentResult.id.toString(), contact: 'huypanha558@gmail.com');
       results['sendReceipt'] = receiptResult;
+      log("sendReceipt = ${results['sendReceipt']}");
 
-      _setResult(const JsonEncoder.withIndent('  ').convert(results));
-    } catch (e) {
+      _setResult(jsonEncode(results));
+    } catch (e, s) {
+      log("Payment flow failed: $e", stackTrace: s);
       _setError('Payment flow failed: $e');
     } finally {
       _setLoading(false);
@@ -343,6 +358,8 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
         foregroundColor: Theme.of(context).colorScheme.onPrimaryContainer,
         bottom: TabBar(
           controller: _tabController,
+          isScrollable: true,
+          tabAlignment: .start,
           tabs: const [
             Tab(icon: Icon(Icons.payment), text: 'Payments'),
             Tab(icon: Icon(Icons.people), text: 'Customers'),
@@ -624,9 +641,17 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
           crossAxisAlignment: .start,
           children: [
             Row(
-              mainAxisAlignment: .spaceBetween,
+              spacing: 5,
               children: [
-                Text('API Response', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: .bold)),
+                Expanded(
+                  child: Text('API Response', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: .bold)),
+                ),
+                IconButton(
+                  onPressed: () async => await Clipboard.setData(ClipboardData(text: _lastResult)).then((_) {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Copied to clipboard')));
+                  }),
+                  icon: const Icon(Icons.copy),
+                ),
                 IconButton(onPressed: () => setState(() => _lastResult = ''), icon: const Icon(Icons.clear)),
               ],
             ),
@@ -636,8 +661,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
               padding: const .all(12),
               decoration: BoxDecoration(color: Theme.of(context).colorScheme.surfaceContainerHighest, borderRadius: .circular(8)),
               child: SingleChildScrollView(
-                scrollDirection: .horizontal,
-                child: SelectableText(_lastResult, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontFamily: 'monospace')),
+                child: SelectableText(_lastResult, style: Theme.of(context).textTheme.bodySmall?.copyWith(fontFamily: 'monospace'), maxLines: 5),
               ),
             ),
           ],

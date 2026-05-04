@@ -1,3 +1,5 @@
+import 'package:mx_merchant/src/models/customer/custom_field/get_custom_field_response_model.dart';
+
 class MxCustomerResponseModel {
   final int id;
   final String? created;
@@ -8,7 +10,7 @@ class MxCustomerResponseModel {
   final String? sales;
   final String? loyaltyStatus;
   final String? loyaltyEnrolled;
-  final List<Map<String, dynamic>> customFields;
+  final List<MxGetCustomFieldResponseModel> customFields;
   final String? displayColor;
 
   const MxCustomerResponseModel({
@@ -36,7 +38,7 @@ class MxCustomerResponseModel {
       sales: json['sales'],
       loyaltyStatus: json['loyaltyStatus'],
       loyaltyEnrolled: json['loyaltyEnrolled'],
-      customFields: List.from(json['customFields'] ?? []).map((e) => Map<String, dynamic>.from(e as Map)).toList(),
+      customFields: MxGetCustomFieldResponseModel.fromJsonArray(json['customFields'] ?? []),
       displayColor: json['displayColor'],
     );
   }
@@ -51,7 +53,7 @@ class MxCustomerResponseModel {
     'sales': sales,
     'loyaltyStatus': loyaltyStatus,
     'loyaltyEnrolled': loyaltyEnrolled,
-    'customFields': customFields,
+    'customFields': customFields.map((e) => e.toJson()).toList(),
     'displayColor': displayColor,
   }..removeWhere((_, value) => value == null);
 }

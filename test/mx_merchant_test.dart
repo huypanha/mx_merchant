@@ -1,10 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mx_merchant/mx_merchant.dart';
-import 'package:mx_merchant/src/models/terminal/terminal_entry_mode_model.dart';
-import 'package:mx_merchant/src/models/terminal/terminal_payment_method_model.dart';
-import 'package:mx_merchant/src/models/terminal/terminal_tip_rate_model.dart';
-import 'package:mx_merchant/src/models/terminal/tip_model.dart';
-import 'package:mx_merchant/src/models/terminal/tip_option_model.dart';
 
 void main() {
   group('Payment Service Models', () {
@@ -14,13 +9,13 @@ void main() {
         tenderType: .card,
         paymentType: .sale,
         cardAccount: MxCardModel(number: '4242424242424242', expiryMonth: '12', expiryYear: '2025', cvv: '123'),
-        customerName: 'John Doe',
+        customerName: 'Huy Panha',
         customerCode: 'CUST001',
         source: .api,
       );
 
       expect(paymentRequest.amount, equals(10.99));
-      expect(paymentRequest.customerName, equals('John Doe'));
+      expect(paymentRequest.customerName, equals('Huy Panha'));
       expect(paymentRequest.customerCode, equals('CUST001'));
     });
 
@@ -30,7 +25,7 @@ void main() {
         tenderType: .card,
         paymentType: .sale,
         cardAccount: MxCardModel(number: '4242424242424242', expiryMonth: '12', expiryYear: '2025', cvv: '123'),
-        customerName: 'John Doe',
+        customerName: 'Huy Panha',
         customerCode: 'CUST001',
         source: .api,
       );
@@ -40,7 +35,7 @@ void main() {
       expect(json['amount'], equals(10.99));
       expect(json['tenderType'], equals('Card'));
       expect(json['paymentType'], equals('Sale'));
-      expect(json['customerName'], equals('John Doe'));
+      expect(json['customerName'], equals('Huy Panha'));
       expect(json['customerCode'], equals('CUST001'));
       expect(json['source'], equals('API'));
       expect(json['cardAccount'], isNotNull);
@@ -67,22 +62,22 @@ void main() {
     });
 
     test('creates BankAccountModel with valid data', () {
-      final bankAccount = MxBankAccountModel(accountNumber: '123456789', routingNumber: '021000021', type: .checking, name: 'John Doe');
+      final bankAccount = MxBankAccountModel(accountNumber: '123456789', routingNumber: '021000021', type: .checking, name: 'Huy Panha');
 
       expect(bankAccount.accountNumber, equals('123456789'));
       expect(bankAccount.routingNumber, equals('021000021'));
-      expect(bankAccount.name, equals('John Doe'));
+      expect(bankAccount.name, equals('Huy Panha'));
     });
 
     test('serializes BankAccountModel to JSON correctly', () {
-      final bankAccount = MxBankAccountModel(accountNumber: '123456789', routingNumber: '021000021', type: .checking, name: 'John Doe');
+      final bankAccount = MxBankAccountModel(accountNumber: '123456789', routingNumber: '021000021', type: .checking, name: 'Huy Panha');
 
       final json = bankAccount.toJson();
 
       expect(json['accountNumber'], equals('123456789'));
       expect(json['routingNumber'], equals('021000021'));
       expect(json['type'], equals('Checking'));
-      expect(json['name'], equals('John Doe'));
+      expect(json['name'], equals('Huy Panha'));
     });
   });
 

@@ -68,7 +68,7 @@ final paymentResult = await merchant.payment.makePayment(
       expiryYear: '2025',
       cvv: '123',
     ),
-    customerName: 'John Doe',
+    customerName: 'Huy Panha',
     customerCode: 'CUST001',
     source: .api,
   ),
@@ -129,13 +129,73 @@ final achPayment = await merchant.payment.makePayment(
       accountNumber: '123456789',
       routingNumber: '021000021',
       accountType: .checking,
-      nameOnAccount: 'John Doe',
+      nameOnAccount: 'Huy Panha',
     ),
     entryClass: .web,
-    customerName: 'John Doe',
+    customerName: 'Huy Panha',
     source: .api,
   ),
 );
+```
+
+### Customer Management
+
+```dart
+// Create a new customer
+final customer = await merchant.customer.create(
+  MxCreateCustomerRequestModel(
+    firstName: 'Huy',
+    lastName: 'Panha',
+    email: 'Huy.Panha@example.com',
+    phone: '+1234567890',
+    company: 'A B',
+  ),
+);
+
+print('Customer ID: ${customer.id}');
+print('Customer Name: ${customer.firstName} ${customer.lastName}');
+
+// Get multiple customers with filters
+final customers = await merchant.customer.get(
+  MxGetCustomerRequestModel(
+    limit: 10,
+    offset: 0,
+  ),
+);
+
+print('Found ${customers.length} customers');
+
+// Get a specific customer
+final specificCustomer = await merchant.customer.getACustomer(customer.id!);
+print('Customer Details: ${specificCustomer.firstName} ${specificCustomer.lastName}');
+
+// Update customer information
+final updatedCustomer = await merchant.customer.update(
+  customerId: customer.id!,
+  customerData: MxCreateCustomerRequestModel(
+    firstName: 'Huy',
+    lastName: 'Panha',
+    email: 'Huy.Panha@example.com',
+  ),
+);
+
+// Add a note to customer
+final noteAdded = await merchant.customer.addNote(
+  customerId: customer.id!,
+  note: 'VIP customer - prefers email communication',
+);
+
+// Get customer notes
+final notes = await merchant.customer.getNote(customer.id!);
+print('Customer has ${notes.length} notes');
+
+// Get customer payments
+final payments = await merchant.customer.getPayments(
+  customerId: customer.id!,
+  offset: 0,
+  limit: 10,
+);
+print('Customer has ${payments.length} payments');
 ```
 
 ### Terminal Management
@@ -221,7 +281,7 @@ final customField = await merchant.customer.customField.create(
   MxCreateCustomFieldRequestModel(
     name: 'Customer Rating',
     fieldName: 'customer_rating',
-    fieldDataType: .number,
+    fieldDataType: .decimal,
     isRequired: false,
     echo: true,
   ),
@@ -254,6 +314,20 @@ print('Custom field deleted: $deleted');
 - `getAPayment()` - Retrieve a specific payment by ID
 - `voidAPayment()` - Void or refund a payment
 - `sendAPaymentReceipt()` - Send payment receipt via email or SMS
+
+### Customer Service Methods
+
+- `create()` - Create a new customer
+- `get()` - Retrieve multiple customers with filtering options
+- `getACustomer()` - Retrieve a specific customer by ID
+- `update()` - Update customer information
+- `addNote()` - Add a note to a customer
+- `getNote()` - Retrieve customer notes
+- `getPayments()` - Retrieve customer payment history
+- `createAddress()` - Create customer address
+- `getAddress()` - Retrieve customer addresses
+- `updateAddress()` - Update customer address
+- `addPhoto()` - Add customer photo
 
 ### Terminal Service Methods
 
@@ -306,7 +380,10 @@ For a complete working example, see the `/example` directory in this package. Th
 
 - Client initialization
 - Payment processing with different tender types
+- Customer management operations (create, retrieve, notes, payment history)
+- Customer custom field management
 - Terminal management operations
+- Terminal transaction operations
 - Error handling
 - Receipt sending
 - Multiple authentication methods

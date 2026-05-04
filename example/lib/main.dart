@@ -55,7 +55,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 5, vsync: this);
   }
 
   @override
@@ -164,6 +164,68 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       _setResult(const JsonEncoder.withIndent('  ').convert(results));
     } catch (e) {
       _setError('Terminal flow failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testCustomersFlow() async {
+    if (!_validateCredentials()) return;
+
+    _setLoading(true);
+    try {
+      final merchant = _createMerchant();
+      final results = <String, dynamic>{};
+
+      // Create Customer
+      final createResult = await merchant.customer.create(
+        MxCreateCustomerRequestModel(firstName: 'Huy', lastName: 'Panha', email: 'john.doe@example.com', phone: '+1234567890', name: 'Panha Huy'),
+      );
+      results['createCustomer'] = createResult.toJson();
+
+      // Get Customers
+      try {
+        final getResults = await merchant.customer.get(MxGetCustomerRequestModel(limit: 10));
+        results['getCustomers'] = getResults.records?.map((e) => e.toJson()).toList();
+      } catch (e) {
+        results['getCustomers'] = 'Expected error: $e';
+      }
+
+      // Get Specific Customer
+      try {
+        final getCustomerResult = await merchant.customer.getACustomer(createResult.id);
+        results['getCustomer'] = getCustomerResult.toJson();
+      } catch (e) {
+        results['getCustomer'] = 'Expected error: $e';
+      }
+
+      // Add Note to Customer
+      try {
+        final noteAdded = await merchant.customer.addNote(customerId: createResult.id, note: 'Test customer created via API');
+        results['addNote'] = noteAdded;
+      } catch (e) {
+        results['addNote'] = 'Expected error: $e';
+      }
+
+      // Get Customer Notes
+      try {
+        final notes = await merchant.customer.getNote(createResult.id);
+        results['getNotes'] = notes.map((e) => e.toJson()).toList();
+      } catch (e) {
+        results['getNotes'] = 'Expected error: $e';
+      }
+
+      // Get Customer Payments
+      try {
+        final payments = await merchant.customer.getPayments(customerId: createResult.id, offset: 0, limit: 10);
+        results['getCustomerPayments'] = payments.toJson();
+      } catch (e) {
+        results['getCustomerPayments'] = 'Expected error: $e';
+      }
+
+      _setResult(const JsonEncoder.withIndent('  ').convert(results));
+    } catch (e) {
+      _setError('Customer flow failed: $e');
     } finally {
       _setLoading(false);
     }
@@ -283,6 +345,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
           controller: _tabController,
           tabs: const [
             Tab(icon: Icon(Icons.payment), text: 'Payments'),
+            Tab(icon: Icon(Icons.people), text: 'Customers'),
             Tab(icon: Icon(Icons.devices), text: 'Terminals'),
             Tab(icon: Icon(Icons.sync_alt), text: 'Transactions'),
             Tab(icon: Icon(Icons.person_outline), text: 'Custom Fields'),
@@ -291,7 +354,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       ),
       body: TabBarView(
         controller: _tabController,
-        children: [_buildPaymentsTab(), _buildTerminalsTab(), _buildTransactionsTab(), _buildCustomFieldsTab()],
+        children: [_buildPaymentsTab(), _buildCustomersTab(), _buildTerminalsTab(), _buildTransactionsTab(), _buildCustomFieldsTab()],
       ),
     );
   }
@@ -356,6 +419,46 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
                           ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
                           : const Icon(Icons.play_arrow),
                       label: Text(_isLoading ? 'Processing...' : 'Test Payment Flow'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (_errorMessage != null) _buildErrorCard(),
+          if (_lastResult.isNotEmpty) _buildResultCard(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomersTab() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildCredentialsCard(),
+          Card(
+            margin: const .all(16),
+            child: Padding(
+              padding: const .all(16),
+              child: Column(
+                crossAxisAlignment: .start,
+                children: [
+                  Text('Customer Operations', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: .bold)),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Test customer management operations including creating customers, retrieving customer data, adding notes, and getting payment history.',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _isLoading ? null : _testCustomersFlow,
+                      icon: _isLoading
+                          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                          : const Icon(Icons.people),
+                      label: Text(_isLoading ? 'Processing...' : 'Test Customer Flow'),
                     ),
                   ),
                 ],

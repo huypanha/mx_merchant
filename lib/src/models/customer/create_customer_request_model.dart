@@ -2,9 +2,6 @@ import '../../utils/enums.dart';
 import 'create_customer_custom_field_model.dart';
 
 class MxCreateCustomerRequestModel {
-  /// Merchant id
-  final int merchantId;
-
   /// Customer's full name (display name)
   final String name;
 
@@ -73,7 +70,6 @@ class MxCreateCustomerRequestModel {
   final bool echo;
 
   MxCreateCustomerRequestModel({
-    required this.merchantId,
     required this.name,
     required this.firstName,
     this.lastName,
@@ -100,7 +96,6 @@ class MxCreateCustomerRequestModel {
 
   Map<String, dynamic> toBodyJson() {
     return {
-      'merchantId': merchantId,
       'name': name,
       'firstName': firstName,
       'lastName': lastName,

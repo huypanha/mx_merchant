@@ -5,6 +5,7 @@ import 'terminal_transaction_service.dart';
 
 /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-overview
 abstract class MxTerminalService {
+  /// Manage terminal transactions
   MxTerminalTransactionService get transaction;
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/get-list-of-terminals
@@ -16,13 +17,13 @@ abstract class MxTerminalService {
   /// 1. https://developer.mxmerchant.com/reference/create-terminal
   /// 2. https://developer.mxmerchant.com/reference/create-terminal-anywherecommerce
   /// 3. https://developer.mxmerchant.com/reference/create-terminal-dejavoo
-  Future createTerminal(MxTerminalRequestModel request) async {
+  Future create(MxTerminalRequestModel request) async {
     throw UnimplementedError();
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/delete-terminal
   /// * terminalId: The terminal ID to delete. The identification number from the MX Merchant system for the terminal/device.
-  Future<bool> deleteTerminal(String terminalId) async {
+  Future<bool> delete(String terminalId) async {
     throw UnimplementedError();
   }
 }

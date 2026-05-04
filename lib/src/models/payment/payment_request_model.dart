@@ -1,5 +1,5 @@
 import 'package:mx_merchant/src/models/payment/pos_data_model.dart';
-import 'package:mx_merchant/src/models/payment/puchase_model.dart';
+import 'package:mx_merchant/src/models/payment/purchase_model.dart';
 import 'package:mx_merchant/src/utils/enums.dart';
 
 import '../bank/bank_account_model.dart';

@@ -27,7 +27,7 @@ class MxTerminalServiceImpl implements MxTerminalService {
   }
 
   @override
-  Future<dynamic> createTerminal(MxTerminalRequestModel request) async {
+  Future<dynamic> create(MxTerminalRequestModel request) async {
     final response = await _apiService.post(
       '$_routeV1/providerkey/${request.providerKey}',
       data: request.toJson(),
@@ -38,7 +38,7 @@ class MxTerminalServiceImpl implements MxTerminalService {
   }
 
   @override
-  Future<bool> deleteTerminal(String terminalId) async {
+  Future<bool> delete(String terminalId) async {
     return await _apiService.delete('$_routeV1/terminalid/$terminalId', authToken: .jwt, baseUrlVersion: .v2);
   }
 }

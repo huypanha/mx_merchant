@@ -1,5 +1,7 @@
 # MX Merchant
 
+<img src="assets/images/mx_logo.png" alt="Logo" width="100%" />
+
 A comprehensive Flutter/Dart client package for integrating with the MX Merchant REST APIs. This package provides a clean, type-safe interface for processing payments, managing customers, handling vaulted accounts, generating reports, and more.
 
 ## Features
@@ -7,6 +9,7 @@ A comprehensive Flutter/Dart client package for integrating with the MX Merchant
 - 💳 **Payment Processing**: Process credit card, ACH, and check payments
 - 🖥️ **Terminal Management**: Create, list, and manage payment terminal devices
 - 🔄 **Terminal Transactions**: Create, update, retrieve, and delete terminal transactions
+- 👥 **Customer Custom Fields**: Create, retrieve, and manage custom fields for customers
 - 📱 **Cross-Platform**: Works on Android, iOS, macOS, Windows, Linux, and Web
 - 🎯 **Type Safety**: Full Dart type safety with comprehensive models
 - 📧 **Receipt Management**: Send payment receipts via email or SMS
@@ -143,7 +146,7 @@ final terminals = await merchant.terminal.getListOfTerminals();
 print('Available terminals: ${terminals.length}');
 
 // Create a new terminal
-final newTerminal = await merchant.terminal.createTerminal(
+final newTerminal = await merchant.terminal.create(
   MxTerminalRequestModel(
     providerKey: 'dejavoo',
     enabled: true,
@@ -172,7 +175,7 @@ final newTerminal = await merchant.terminal.createTerminal(
 );
 
 // Delete a terminal
-final deleted = await merchant.terminal.deleteTerminal('terminal_id_here');
+final deleted = await merchant.terminal.delete('terminal_id_here');
 print('Terminal deleted: $deleted');
 ```
 
@@ -180,7 +183,7 @@ print('Terminal deleted: $deleted');
 
 ```dart
 // Create a new terminal transaction
-final transactionResult = await merchant.terminal.transaction.createTransaction(
+final transactionResult = await merchant.terminal.transaction.create(
   MxTerminalCreateTransactionRequestModel(
     terminalId: 'terminal_123',
     amount: 25.50,
@@ -194,7 +197,7 @@ print('Transaction Status: ${transactionResult.status}');
 print('Transaction Message: ${transactionResult.message}');
 
 // Update an existing terminal transaction
-await merchant.terminal.transaction.updateTransaction(
+await merchant.terminal.transaction.update(
   MxTerminalUpdateTransactionRequestModel(
     reference: 'ref_12345',
     terminalId: 'terminal_123',
@@ -203,11 +206,43 @@ await merchant.terminal.transaction.updateTransaction(
 );
 
 // Get transaction details by replay ID
-final transactionDetails = await merchant.terminal.transaction.getTransaction('123456789012345');
+final transactionDetails = await merchant.terminal.transaction.get('123456789012345');
 
 // Delete a terminal transaction
-final deleted = await merchant.terminal.transaction.deleteTransaction('terminal_123');
+final deleted = await merchant.terminal.transaction.delete('terminal_123');
 print('Transaction deleted: $deleted');
+```
+
+### Customer Custom Fields
+
+```dart
+// Create a new custom field for customers
+final customField = await merchant.customer.customField.create(
+  MxCreateCustomFieldRequestModel(
+    name: 'Customer Rating',
+    fieldName: 'customer_rating',
+    fieldDataType: .number,
+    isRequired: false,
+    echo: true,
+  ),
+);
+
+print('Custom Field ID: ${customField.id}');
+print('Field Name: ${customField.name}');
+
+// Get custom fields for a specific customer
+final customerFields = await merchant.customer.customField.get('customer_id_123');
+print('Customer has ${customerFields.length} custom fields');
+
+for (final field in customerFields) {
+  print('Field: ${field.fieldDefinitionName}');
+  print('Type: ${field.fieldDataType}');
+  print('Required: ${field.isRequired}');
+}
+
+// Delete a custom field
+final deleted = await merchant.customer.customField.delete(fieldId);
+print('Custom field deleted: $deleted');
 ```
 
 ## API Reference
@@ -232,6 +267,12 @@ print('Transaction deleted: $deleted');
 - `updateTransaction()` - Update an existing terminal transaction by reference and terminal ID
 - `getTransaction()` - Retrieve transaction details using replay ID
 - `deleteTransaction()` - Delete a terminal transaction by terminal ID
+
+### Customer Custom Field Service Methods
+
+- `create()` - Create a new custom field for customers
+- `get()` - Retrieve custom fields for a specific customer
+- `delete()` - Delete a custom field by ID
 
 ### Supported Payment Types
 

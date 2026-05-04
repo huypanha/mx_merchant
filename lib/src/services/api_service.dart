@@ -60,7 +60,7 @@ class ApiService {
   Future<T> get<T>(
     String path, {
     Map<String, dynamic>? query,
-    Map<String, dynamic>? data,
+    Object? data,
     MxAuthToken authToken = .basic,
     MxBaseUrlVersion baseUrlVersion = .v1,
   }) async {
@@ -82,7 +82,7 @@ class ApiService {
   Future<T> post<T>(
     String path, {
     Map<String, dynamic>? query,
-    Map<String, dynamic>? data,
+    Object? data,
     MxAuthToken authToken = .basic,
     MxBaseUrlVersion baseUrlVersion = .v1,
   }) async {
@@ -104,7 +104,7 @@ class ApiService {
   Future<bool> delete(
     String path, {
     Map<String, dynamic>? query,
-    Map<String, dynamic>? data,
+    Object? data,
     MxAuthToken authToken = .basic,
     MxBaseUrlVersion baseUrlVersion = .v1,
   }) async {
@@ -124,5 +124,27 @@ class ApiService {
       return true;
     }
     return false;
+  }
+
+  Future<T> put<T>(
+    String path, {
+    Map<String, dynamic>? query,
+    Object? data,
+    MxAuthToken authToken = .basic,
+    MxBaseUrlVersion baseUrlVersion = .v1,
+  }) async {
+    if (authToken == .basic) {
+      _setBasicToken();
+    } else if (authToken == .jwt) {
+      await _setJWTToken();
+    }
+    String baseUrl = '';
+    if (baseUrlVersion == .v1) {
+      baseUrl = _baseUrl;
+    } else {
+      baseUrl = _baseUrlV2;
+    }
+    final res = await _dio.put("$baseUrl$path", queryParameters: query, data: data);
+    return handleResponse<T>(res);
   }
 }

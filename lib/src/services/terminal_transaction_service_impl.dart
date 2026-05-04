@@ -14,7 +14,7 @@ class MxTerminalTransactionServiceImpl implements MxTerminalTransactionService {
   }
 
   @override
-  Future<MxTerminalCreateTransactionResponseModel> createTransaction(MxTerminalCreateTransactionRequestModel request) async {
+  Future<MxTerminalCreateTransactionResponseModel> create(MxTerminalCreateTransactionRequestModel request) async {
     final response = await _apiService.post(
       '$_routeV1/merchantid/${_apiService.merchantId}/terminalid/${request.terminalId}',
       authToken: .jwt,
@@ -25,7 +25,7 @@ class MxTerminalTransactionServiceImpl implements MxTerminalTransactionService {
   }
 
   @override
-  Future<dynamic> updateTransaction(MxTerminalUpdateTransactionRequestModel request) async {
+  Future<dynamic> update(MxTerminalUpdateTransactionRequestModel request) async {
     await _apiService.post(
       '$_routeV1/callback/merchantid/${_apiService.merchantId}/reference/${request.reference}/terminalid/${request.terminalId}/transactionId/${request.transactionId}',
       authToken: .jwt,
@@ -34,12 +34,12 @@ class MxTerminalTransactionServiceImpl implements MxTerminalTransactionService {
   }
 
   @override
-  Future<dynamic> getTransaction(String replayId) async {
+  Future<dynamic> get(String replayId) async {
     await _apiService.get('checkout/v3/payment', query: {'merchantId': _apiService.merchantId, 'replayId': replayId});
   }
 
   @override
-  Future<bool> deleteTransaction(String terminalId) async {
+  Future<bool> delete(String terminalId) async {
     return await _apiService.get('$_routeV1/merchantid/${_apiService.merchantId}/terminalid/$terminalId');
   }
 }

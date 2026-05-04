@@ -1,3 +1,19 @@
+## 0.0.1-beta.5
+
+### ✨ New Features
+* **Customer Custom Field Service**: Added comprehensive customer custom field management with the following capabilities:
+  - `create()` - Create new custom fields for customers with various data types
+  - `get()` - Retrieve custom fields for specific customers
+  - `delete()` - Delete custom fields by ID
+* **Enhanced Customer Models**: Added complete set of customer custom field models including:
+  - `MxCreateCustomFieldRequestModel` - Request model for creating custom fields
+  - `MxCreateCustomFieldResponseModel` - Response model for custom field creation
+  - `MxGetCustomFieldResponseModel` - Response model for retrieving customer custom fields
+  - `MxCustomFieldOptionModel` - Model for custom field options
+* **Service Integration**: Customer custom field service fully integrated into main MxMerchant class
+* **Example App Enhancement**: Added Customer Custom Fields tab to demonstration app with complete workflow examples
+* **Documentation Updates**: Updated README.md with comprehensive Customer Custom Field usage examples and API reference
+
 ## 0.0.1-beta.4
 
 ### ✨ New Features

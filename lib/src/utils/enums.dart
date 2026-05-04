@@ -193,3 +193,28 @@ enum MxFilterDateType {
 enum MxAuthToken { basic, jwt }
 
 enum MxBaseUrlVersion { v1, v2 }
+
+enum MxCustomFieldDataType {
+  string('String'),
+  integer('Integer'),
+  boolean('Boolean'),
+  decimal('Decimal'),
+  list('List');
+
+  final String name;
+  const MxCustomFieldDataType(this.name);
+}
+
+enum MxDurationOption {
+  lifetime('Lifetime'),
+  month('Month'),
+  week('Week'),
+  yesterday('Yesterday'),
+  today('Today'),
+  last30('Last30'),
+  last7('Last7'),
+  custom('Custom');
+
+  final String name;
+  const MxDurationOption(this.name);
+}

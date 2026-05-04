@@ -55,7 +55,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -156,7 +156,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       results['getTerminals'] = terminalsResult.map((e) => e.toJson()).toList();
 
       // Create Terminal
-      final createResult = await merchant.terminal.createTerminal(
+      final createResult = await merchant.terminal.create(
         MxTerminalRequestModel(providerKey: 'dejavoo', enabled: true, name: 'Test Terminal', description: 'Test terminal for demonstration'),
       );
       results['createTerminal'] = createResult;
@@ -178,7 +178,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       final results = <String, dynamic>{};
 
       // Create Terminal Transaction
-      final createResult = await merchant.terminal.transaction.createTransaction(
+      final createResult = await merchant.terminal.transaction.create(
         MxTerminalCreateTransactionRequestModel(
           terminalId: 'test_terminal_id',
           amount: 10.00,
@@ -190,12 +190,12 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       results['createTransaction'] = createResult.toJson();
 
       // Get Transaction
-      final getResult = await merchant.terminal.transaction.getTransaction('000000000000015');
+      final getResult = await merchant.terminal.transaction.get('000000000000015');
       results['getTransaction'] = getResult;
 
       // Update Transaction (example with empty data)
       try {
-        await merchant.terminal.transaction.updateTransaction(
+        await merchant.terminal.transaction.update(
           MxTerminalUpdateTransactionRequestModel(reference: 'test_ref', terminalId: 'test_terminal_id', transactionId: 'test_txn_id'),
         );
         results['updateTransaction'] = 'Success';
@@ -205,7 +205,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
 
       // Delete Transaction (example)
       try {
-        final deleteResult = await merchant.terminal.transaction.deleteTransaction('test_terminal_id');
+        final deleteResult = await merchant.terminal.transaction.delete('test_terminal_id');
         results['deleteTransaction'] = deleteResult;
       } catch (e) {
         results['deleteTransaction'] = 'Expected error: $e';
@@ -214,6 +214,51 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       _setResult(const JsonEncoder.withIndent('  ').convert(results));
     } catch (e) {
       _setError('Terminal transaction flow failed: $e');
+    } finally {
+      _setLoading(false);
+    }
+  }
+
+  Future<void> _testCustomFieldsFlow() async {
+    if (!_validateCredentials()) return;
+
+    _setLoading(true);
+    try {
+      final merchant = _createMerchant();
+      final results = <String, dynamic>{};
+
+      // Create Custom Field
+      final createResult = await merchant.customer.customField.create(
+        MxCreateCustomFieldRequestModel(
+          name: 'Customer Rating',
+          fieldName: 'customer_rating',
+          fieldDataType: .decimal,
+          isRequired: false,
+          echo: true,
+        ),
+      );
+      results['createCustomField'] = createResult.toJson();
+
+      // Get Custom Fields for a customer
+      try {
+        final getResults = await merchant.customer.customField.get('test_customer_id');
+        results['getCustomFields'] = getResults.map((e) => e.toJson()).toList();
+      } catch (e) {
+        results['getCustomFields'] = 'Expected error: $e';
+      }
+
+      // Delete Custom Field (example)
+      try {
+        final fieldId = createResult.id;
+        final deleteResult = await merchant.customer.customField.delete(fieldId);
+        results['deleteCustomField'] = deleteResult;
+      } catch (e) {
+        results['deleteCustomField'] = 'Expected error: $e';
+      }
+
+      _setResult(const JsonEncoder.withIndent('  ').convert(results));
+    } catch (e) {
+      _setError('Custom fields flow failed: $e');
     } finally {
       _setLoading(false);
     }
@@ -240,10 +285,14 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
             Tab(icon: Icon(Icons.payment), text: 'Payments'),
             Tab(icon: Icon(Icons.devices), text: 'Terminals'),
             Tab(icon: Icon(Icons.sync_alt), text: 'Transactions'),
+            Tab(icon: Icon(Icons.person_outline), text: 'Custom Fields'),
           ],
         ),
       ),
-      body: TabBarView(controller: _tabController, children: [_buildPaymentsTab(), _buildTerminalsTab(), _buildTransactionsTab()]),
+      body: TabBarView(
+        controller: _tabController,
+        children: [_buildPaymentsTab(), _buildTerminalsTab(), _buildTransactionsTab(), _buildCustomFieldsTab()],
+      ),
     );
   }
 
@@ -387,6 +436,46 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
                           ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
                           : const Icon(Icons.sync_alt),
                       label: Text(_isLoading ? 'Processing...' : 'Test Transaction Flow'),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (_errorMessage != null) _buildErrorCard(),
+          if (_lastResult.isNotEmpty) _buildResultCard(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildCustomFieldsTab() {
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          _buildCredentialsCard(),
+          Card(
+            margin: const .all(16),
+            child: Padding(
+              padding: const .all(16),
+              child: Column(
+                crossAxisAlignment: .start,
+                children: [
+                  Text('Customer Custom Field Operations', style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: .bold)),
+                  const SizedBox(height: 8),
+                  Text(
+                    'Test customer custom field operations including creating, retrieving, and deleting custom fields for customers.',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  ),
+                  const SizedBox(height: 16),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton.icon(
+                      onPressed: _isLoading ? null : _testCustomFieldsFlow,
+                      icon: _isLoading
+                          ? const SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))
+                          : const Icon(Icons.person_outline),
+                      label: Text(_isLoading ? 'Processing...' : 'Test Custom Fields Flow'),
                     ),
                   ),
                 ],

@@ -6,22 +6,22 @@ import '../models/terminal/transaction/update_transaction_request_model.dart';
 /// The full documentation can be found here: https://developer.mxmerchant.com/reference/transaction-2
 abstract class MxTerminalTransactionService {
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-transaction-create
-  Future<MxTerminalCreateTransactionResponseModel> createTransaction(MxTerminalCreateTransactionRequestModel request) async {
+  Future<MxTerminalCreateTransactionResponseModel> create(MxTerminalCreateTransactionRequestModel request) async {
     throw UnimplementedError();
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-transaction-update
-  Future updateTransaction(MxTerminalUpdateTransactionRequestModel request) async {
+  Future update(MxTerminalUpdateTransactionRequestModel request) async {
     throw UnimplementedError();
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-transaction-get
-  Future getTransaction(String replayId) async {
+  Future get(String replayId) async {
     throw UnimplementedError();
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-transaction-delete
-  Future<bool> deleteTransaction(String terminalId) async {
+  Future<bool> delete(String terminalId) async {
     throw UnimplementedError();
   }
 }

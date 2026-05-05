@@ -72,7 +72,3 @@ platforms:
   windows:
   linux:
   web:
-
-screenshots:
-  - description: "MX Merchant Logo"
-    path: assets/images/mx_logo.png

@@ -13,7 +13,7 @@ class MxMerchant {
   late MxTerminalService terminal;
   late MxCustomerService customer;
 
-  MxMerchant({required String consumerKey, required String consumerSecret, required String merchantId, MxMerchantEnvironment env = .sandbox}) {
+  MxMerchant({required String consumerKey, required String consumerSecret, required String merchantId, MxMerchantEnvironmentEnum env = .sandbox}) {
     _apiService = ApiService(consumerKey: consumerKey, consumerSecret: consumerSecret, env: env, merchantId: merchantId);
     payment = MxPaymentServiceImpl(_apiService);
     terminal = MxTerminalServiceImpl(_apiService);

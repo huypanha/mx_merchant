@@ -1,15 +1,15 @@
-import 'priority_payment_systems_model.dart';
-import 'provider_model.dart';
+import '../priority_payment_systems_model.dart';
+import '../provider_model.dart';
 
 class MxTerminalCreateTransactionResponseModel {
   /// Message
   final String? message;
 
   /// Priority Payment Systems
-  final MxTerminalTransactionPriorityPaymentSystemsModel? priorityPaymentSystems;
+  final MxTerminalPriorityPaymentSystemModel? priorityPaymentSystems;
 
   /// Provider
-  final MxTerminalTransactionProviderModel? provider;
+  final MxTerminalProviderModel? provider;
 
   /// Status
   final String? status;
@@ -21,8 +21,8 @@ class MxTerminalCreateTransactionResponseModel {
       message: json['message'],
       priorityPaymentSystems: json['prioritypaymentsystems'] == null
           ? null
-          : MxTerminalTransactionPriorityPaymentSystemsModel.fromJson(json['prioritypaymentsystems']),
-      provider: json['provider'] == null ? null : MxTerminalTransactionProviderModel.fromJson(json['provider']),
+          : MxTerminalPriorityPaymentSystemModel.fromJson(json['prioritypaymentsystems']),
+      provider: json['provider'] == null ? null : MxTerminalProviderModel.fromJson(json['provider']),
       status: json['status'],
     );
   }

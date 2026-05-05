@@ -1,6 +1,6 @@
-import 'package:mx_merchant/mx_merchant.dart';
-
+import '../models/terminal/create_terminal_response_model.dart';
 import '../models/terminal/terminal_model.dart';
+import '../models/terminal/terminal_request_model.dart';
 import 'terminal_transaction_service.dart';
 
 /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-overview
@@ -17,7 +17,7 @@ abstract class MxTerminalService {
   /// 1. https://developer.mxmerchant.com/reference/create-terminal
   /// 2. https://developer.mxmerchant.com/reference/create-terminal-anywherecommerce
   /// 3. https://developer.mxmerchant.com/reference/create-terminal-dejavoo
-  Future create(MxTerminalRequestModel request) async {
+  Future<MxCreateTerminalResponseModel> create(MxTerminalRequestModel request) async {
     throw UnimplementedError();
   }
 

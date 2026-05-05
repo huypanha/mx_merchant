@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:io';
-
 import 'package:mx_merchant/src/models/customer/address/create_address_request_model.dart';
 import 'package:mx_merchant/src/models/customer/address/create_address_response_model.dart';
 import 'package:mx_merchant/src/models/customer/create_customer_request_model.dart';
@@ -12,7 +9,7 @@ import 'package:mx_merchant/src/services/customer_service.dart';
 
 import '../models/customer/create_customer_response_model.dart';
 import '../models/customer/customer_payment_response_model.dart';
-import '../utils/mx_merchant_exception.dart';
+import '../utils/throw_error.dart';
 import 'customer_custom_field_service.dart';
 import 'customer_custom_field_service_impl.dart';
 
@@ -35,11 +32,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 201) {
       return MxCreateCustomerResponseModel.fromJson(Map<String, dynamic>.from(response.data));
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -51,11 +44,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 200) {
       return MxGetCustomerResponseModel.fromJson(Map<String, dynamic>.from(response.data));
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -65,11 +54,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 200) {
       return MxCreateCustomerResponseModel.fromJson(Map<String, dynamic>.from(response.data));
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -81,11 +66,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 201) {
       return MxCreateCustomerResponseModel.fromJson(Map<String, dynamic>.from(response.data));
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -95,11 +76,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 200) {
       return MxCreateCustomerAddressResponseModel.fromJsonArray(response.data);
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -109,11 +86,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 200) {
       return MxCreateCustomerAddressResponseModel.fromJsonArray(response.data);
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -123,29 +96,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 200) {
       return MxCreateCustomerAddressResponseModel.fromJson(Map<String, dynamic>.from(response.data));
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
-    }
-  }
-
-  @override
-  Future<bool> addPhoto({required int customerId, required File photo}) async {
-    final response = await _apiService.post(
-      '${_route}photo',
-      data: jsonEncode({'RAW_BODY': base64Encode(photo.readAsBytesSync())}),
-      query: {'id': customerId},
-    );
-    if (response.statusCode == 201) {
-      return true;
-    } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -155,11 +106,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 201) {
       return true;
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -169,11 +116,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 200) {
       return MxCustomerNoteModel.fromJsonArray(response.data);
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -186,11 +129,7 @@ class MxCustomerServiceImpl implements MxCustomerService {
     if (response.statusCode == 200) {
       return MxCustomerPaymentResponseModel.fromJson(response.data);
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 }

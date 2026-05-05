@@ -14,9 +14,9 @@ class MxPaymentRequestModel {
   final double amount;
 
   /// Type of transaction.
-  final MxPaymentTransactionType? paymentType;
+  final MxPaymentTransactionTypeEnum? paymentType;
 
-  final MxPaymentTenderType tenderType;
+  final MxPaymentTenderTypeEnum tenderType;
 
   /// Card Account Object. Required if tenderType is `MxPaymentTenderType.card`.
   final MxCardModel? cardAccount;
@@ -25,7 +25,7 @@ class MxPaymentRequestModel {
   final MxBankAccountModel? bankAccount;
 
   /// Gets or sets the ACH entry class.
-  final MxPaymentEntryClass? entryClass;
+  final MxPaymentEntryClassEnum? entryClass;
 
   /// Indicates that this payment should NOT be added to current batch.
   /// AuthOnly payment won't be settled.
@@ -56,7 +56,7 @@ class MxPaymentRequestModel {
   /// This identifier must be unique.
   final int? replayId;
 
-  final MxPaymentSource? source;
+  final MxPaymentSourceEnum? source;
 
   /// Client provided payment reference number.
   /// Can be associated with multiple payments. 17 char max.
@@ -150,9 +150,9 @@ class MxPaymentRequestModel {
     this.vatRate,
     this.tags,
   }) : assert(amount > 0, 'Amount must be greater than 0'),
-       assert(tenderType != MxPaymentTenderType.card || cardAccount != null, 'cardAccount is required when tenderType is card'),
+       assert(tenderType != MxPaymentTenderTypeEnum.card || cardAccount != null, 'cardAccount is required when tenderType is card'),
        assert(
-         tenderType != MxPaymentTenderType.check && tenderType != MxPaymentTenderType.ach || bankAccount != null,
+         tenderType != MxPaymentTenderTypeEnum.check && tenderType != MxPaymentTenderTypeEnum.ach || bankAccount != null,
          'bankAccount is required when tenderType is check or ach',
        ),
        assert(clientReference == null || clientReference.length <= 17, 'clientReference must be 17 characters or fewer'),
@@ -202,11 +202,11 @@ class MxPaymentRequestModel {
   factory MxPaymentRequestModel.fromJson(Map<String, dynamic> json) {
     return MxPaymentRequestModel(
       amount: json['amount'] ?? 0,
-      paymentType: json['paymentType'] != null ? MxPaymentTransactionType.values.firstWhere((e) => e.name == json['paymentType']) : null,
-      tenderType: MxPaymentTenderType.values.firstWhere((e) => e.name == json['tenderType']),
+      paymentType: json['paymentType'] != null ? MxPaymentTransactionTypeEnum.values.firstWhere((e) => e.name == json['paymentType']) : null,
+      tenderType: MxPaymentTenderTypeEnum.values.firstWhere((e) => e.name == json['tenderType']),
       cardAccount: json['cardAccount'] != null ? MxCardModel.fromJson(json['cardAccount']) : null,
       bankAccount: json['bankAccount'] != null ? MxBankAccountModel.fromJson(json['bankAccount']) : null,
-      entryClass: json['entryClass'] != null ? MxPaymentEntryClass.values.firstWhere((e) => e.name == json['entryClass']) : null,
+      entryClass: json['entryClass'] != null ? MxPaymentEntryClassEnum.values.firstWhere((e) => e.name == json['entryClass']) : null,
       authOnly: json['authOnly'] != null ? bool.tryParse(json['authOnly'].toString()) : null,
       isAuth: json['isAuth'] != null ? bool.tryParse(json['isAuth'].toString()) : null,
       isSettleFunds: json['isSettleFunds'] != null ? bool.tryParse(json['isSettleFunds'].toString()) : null,
@@ -215,7 +215,7 @@ class MxPaymentRequestModel {
       customerCode: json['customerCode'],
       meta: json['meta'],
       replayId: json['replayId'] != null ? int.tryParse(json['replayId'].toString()) : null,
-      source: json['source'] != null ? MxPaymentSource.values.firstWhere((e) => e.name == json['source']) : null,
+      source: json['source'] != null ? MxPaymentSourceEnum.values.firstWhere((e) => e.name == json['source']) : null,
       clientReference: json['clientReference'],
       invoice: json['invoice'],
       invoiceIds: json['invoiceIds'] != null ? List<String>.from(json['invoiceIds']) : null,

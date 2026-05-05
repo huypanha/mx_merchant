@@ -10,7 +10,7 @@ class ApiService {
   String consumerKey;
   String consumerSecret;
   String merchantId;
-  MxMerchantEnvironment env;
+  MxMerchantEnvironmentEnum env;
 
   String _basicToken = '';
   String? _jwtToken;
@@ -48,24 +48,22 @@ class ApiService {
 
   Future _setJWTToken() async {
     _jwtToken ??= await _getJWTToken();
-    _jwtToken = 'Bearer ${base64Encode(utf8.encode('$consumerKey:$consumerSecret'))}';
     _dio.options.headers['Authorization'] = _jwtToken;
-    log('Token = "$_jwtToken"');
+    log('JWT Token = "$_jwtToken"');
   }
 
   Future<String> _getJWTToken() async {
     _setBasicToken();
-    final res = await _dio.get("$_baseUrlV2/security/v1/application/merchantId/$merchantId/token");
-    final json = res.toString().replaceFirst('Response:', '').trim();
-    return jsonDecode(json)['jwtToken'];
+    final res = await _dio.get("${_baseUrlV2}security/v1/application/merchantId/$merchantId/token");
+    return "Bearer ${jsonDecode(res.data)['jwtToken']}";
   }
 
   Future<Response> get(
     String path, {
     Map<String, dynamic>? query,
     Object? data,
-    MxAuthToken authToken = .basic,
-    MxBaseUrlVersion baseUrlVersion = .v1,
+    MxAuthTokenEnum authToken = .basic,
+    MxBaseUrlVersionEnum baseUrlVersion = .v1,
   }) async {
     if (authToken == .basic) {
       _setBasicToken();
@@ -85,8 +83,8 @@ class ApiService {
     String path, {
     Map<String, dynamic>? query,
     Object? data,
-    MxAuthToken authToken = .basic,
-    MxBaseUrlVersion baseUrlVersion = .v1,
+    MxAuthTokenEnum authToken = .basic,
+    MxBaseUrlVersionEnum baseUrlVersion = .v1,
   }) async {
     if (authToken == .basic) {
       _setBasicToken();
@@ -106,8 +104,8 @@ class ApiService {
     String path, {
     Map<String, dynamic>? query,
     Object? data,
-    MxAuthToken authToken = .basic,
-    MxBaseUrlVersion baseUrlVersion = .v1,
+    MxAuthTokenEnum authToken = .basic,
+    MxBaseUrlVersionEnum baseUrlVersion = .v1,
   }) async {
     if (authToken == .basic) {
       _setBasicToken();
@@ -127,8 +125,8 @@ class ApiService {
     String path, {
     Map<String, dynamic>? query,
     Object? data,
-    MxAuthToken authToken = .basic,
-    MxBaseUrlVersion baseUrlVersion = .v1,
+    MxAuthTokenEnum authToken = .basic,
+    MxBaseUrlVersionEnum baseUrlVersion = .v1,
   }) async {
     if (authToken == .basic) {
       _setBasicToken();

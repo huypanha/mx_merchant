@@ -9,4 +9,13 @@ class MxTerminalEntryModeModel {
   Map<String, dynamic> toJson() {
     return {'swipe': swipe, 'insert': insert, 'tap': tap, 'pinpad': pinPad};
   }
+
+  factory MxTerminalEntryModeModel.fromJson(Map<String, dynamic> json) {
+    return MxTerminalEntryModeModel(
+      swipe: json['swipe'] ?? true,
+      insert: json['insert'] ?? true,
+      tap: json['tap'] ?? true,
+      pinPad: json['pinpad'] ?? true,
+    );
+  }
 }

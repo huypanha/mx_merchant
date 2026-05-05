@@ -22,7 +22,11 @@ export 'src/models/payment/payment_response_model.dart';
 export 'src/models/payment/pos_data_model.dart';
 export 'src/models/payment/purchase_model.dart';
 export 'src/models/payment/risk_model.dart';
-// Terminal Models
+export 'src/models/terminal/create_terminal_response_model.dart';
+export 'src/models/terminal/provider_model.dart';
+export 'src/models/terminal/provider_terminal_config_model.dart';
+export 'src/models/terminal/provider_terminal_endpoint_model.dart';
+export 'src/models/terminal/provider_terminal_model.dart';
 export 'src/models/terminal/terminal_entry_mode_model.dart';
 export 'src/models/terminal/terminal_key_model.dart';
 export 'src/models/terminal/terminal_model.dart';
@@ -31,16 +35,12 @@ export 'src/models/terminal/terminal_request_model.dart';
 export 'src/models/terminal/terminal_tip_rate_model.dart';
 export 'src/models/terminal/tip_model.dart';
 export 'src/models/terminal/tip_option_model.dart';
-// Terminal Transaction Models
 export 'src/models/terminal/transaction/create_transaction_request_model.dart';
 export 'src/models/terminal/transaction/create_transaction_response_model.dart';
 export 'src/models/terminal/transaction/merchant_model.dart';
 export 'src/models/terminal/transaction/mx_merchant_model.dart';
-export 'src/models/terminal/transaction/provider_model.dart';
 export 'src/models/terminal/transaction/update_transaction_request_model.dart';
-// Core
 export 'src/mx_merchant.dart';
-// Services
 export 'src/services/customer_custom_field_service.dart';
 export 'src/utils/enums.dart';
 export 'src/utils/mx_merchant_exception.dart';

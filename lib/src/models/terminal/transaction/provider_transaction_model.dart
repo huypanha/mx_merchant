@@ -1,4 +1,4 @@
-class MxTerminalTransactionProviderTransactionModel {
+class MxTerminalProviderTransactionModel {
   /// Terminal ID
   final String? terminalID;
 
@@ -44,7 +44,7 @@ class MxTerminalTransactionProviderTransactionModel {
   /// Message
   final String? message;
 
-  MxTerminalTransactionProviderTransactionModel({
+  MxTerminalProviderTransactionModel({
     this.terminalID,
     this.status,
     this.transactionType,
@@ -62,23 +62,23 @@ class MxTerminalTransactionProviderTransactionModel {
     this.message,
   });
 
-  factory MxTerminalTransactionProviderTransactionModel.fromJson(Map<String, dynamic> json) {
-    return MxTerminalTransactionProviderTransactionModel(
-      terminalID: json['terminalID'],
+  factory MxTerminalProviderTransactionModel.fromJson(Map<String, dynamic> json) {
+    return MxTerminalProviderTransactionModel(
+      terminalID: (json['terminalID'] ?? '').toString(),
       status: json['status'],
       transactionType: json['transactionType'],
-      totalAmount: json['totalAmount'],
+      totalAmount: (json['totalAmount'] ?? '').toString(),
       callbackUrl: json['callbackUrl'],
-      uuid: json['uuid'],
-      id: json['id'],
+      uuid: json['uuid'] != null ? (json['uuid'] ?? '').toString() : null,
+      id: json['id'] != null ? (json['id'] ?? '').toString() : null,
       portfolio: json['portfolio'],
       dateCreated: json['dateCreated'],
       clientReference: json['clientReference'],
       currency: json['currency'],
-      merchantId: json['merchantId'],
+      merchantId: (json['merchantId'] ?? '').toString(),
       source: json['source'],
-      replayId: json['replayId'],
-      message: json['message'],
+      replayId: json['replayId'] != null ? (json['replayId'] ?? '').toString() : null,
+      message: (json['message'] ?? '').toString(),
     );
   }
 

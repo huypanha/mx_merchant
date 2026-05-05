@@ -1,5 +1,6 @@
-import 'package:mx_merchant/mx_merchant.dart';
 import 'package:mx_merchant/src/models/customer/custom_field/custom_field_option_model.dart';
+
+import '../../../utils/enums.dart';
 
 class MxCreateCustomFieldResponseModel {
   /// Id for the custom field (Integer type)
@@ -9,7 +10,7 @@ class MxCreateCustomFieldResponseModel {
   final String fieldName;
 
   /// Type of field.
-  final MxCustomFieldDataType fieldDataType;
+  final MxCustomFieldDataTypeEnum fieldDataType;
 
   /// Always customer. Example: "Customer"
   final String fieldSourceType;
@@ -54,7 +55,7 @@ class MxCreateCustomFieldResponseModel {
     return MxCreateCustomFieldResponseModel(
       id: int.tryParse(map['id'].toString()) ?? 0,
       fieldName: map['fieldName'],
-      fieldDataType: MxCustomFieldDataType.values.firstWhere((e) => e.name == map['fieldDataType']),
+      fieldDataType: MxCustomFieldDataTypeEnum.values.firstWhere((e) => e.name == map['fieldDataType']),
       fieldSourceType: map['fieldSourceType'],
       isSystem: bool.tryParse(map['isSystem'].toString()) ?? true,
       isDeleted: bool.tryParse(map['isDeleted'].toString()) ?? true,

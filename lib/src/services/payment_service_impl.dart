@@ -57,7 +57,6 @@ class MxPaymentServiceImpl implements MxPaymentService {
   Future<bool> voidAPayment(String paymentId, {bool? force}) async {
     final response = await _apiService.delete("$_route/$paymentId", query: {'force': force}..removeWhere((_, v) => v == null));
     if (response.statusCode == 204) {
-      log('voidAPayment res = ${response.data}');
       return true;
     } else {
       throw errorParser(response);
@@ -71,7 +70,6 @@ class MxPaymentServiceImpl implements MxPaymentService {
       query: {'id': paymentId, 'contact': contact, 'ignoreBcc': ignoreBcc}..removeWhere((_, v) => v == null),
     );
     if (response.statusCode == 202) {
-      log('sendAPaymentReceipt res = ${response.data}');
       return true;
     } else {
       throw errorParser(response);

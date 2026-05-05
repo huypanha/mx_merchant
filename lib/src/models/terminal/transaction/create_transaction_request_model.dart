@@ -7,7 +7,7 @@ class MxTerminalCreateTransactionRequestModel {
   /// Amount
   final double amount;
 
-  final MxPaymentTransactionType type;
+  final MxPaymentTransactionTypeEnum type;
 
   /// Vault Card
   final bool vaultCard;

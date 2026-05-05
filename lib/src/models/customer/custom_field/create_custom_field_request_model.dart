@@ -12,7 +12,7 @@ class MxCreateCustomFieldRequestModel {
   final String? fieldName;
 
   /// Type of field.
-  final MxCustomFieldDataType? fieldDataType;
+  final MxCustomFieldDataTypeEnum? fieldDataType;
 
   /// Always customer
   final String fieldSourceType;

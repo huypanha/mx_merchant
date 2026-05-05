@@ -1,22 +1,22 @@
-enum MxMerchantEnvironment { sandbox, production }
+enum MxMerchantEnvironmentEnum { sandbox, production }
 
-enum MxBankAccountType {
+enum MxBankAccountTypeEnum {
   checking('Checking'),
   savings('Savings');
 
   final String name;
-  const MxBankAccountType(this.name);
+  const MxBankAccountTypeEnum(this.name);
 }
 
-enum MxCustomerType {
+enum MxCustomerTypeEnum {
   person('Person'),
   business('Business');
 
   final String name;
-  const MxCustomerType(this.name);
+  const MxCustomerTypeEnum(this.name);
 }
 
-enum MxPaymentTransactionType {
+enum MxPaymentTransactionTypeEnum {
   any('Any'),
   sale('Sale'),
   returnTransaction('Return'),
@@ -33,10 +33,10 @@ enum MxPaymentTransactionType {
   balance('Balance');
 
   final String name;
-  const MxPaymentTransactionType(this.name);
+  const MxPaymentTransactionTypeEnum(this.name);
 }
 
-enum MxPaymentTenderType {
+enum MxPaymentTenderTypeEnum {
   any('Any'),
   card('Card'),
   check('Check'),
@@ -46,20 +46,20 @@ enum MxPaymentTenderType {
   ach('ACH');
 
   final String name;
-  const MxPaymentTenderType(this.name);
+  const MxPaymentTenderTypeEnum(this.name);
 }
 
-enum MxPaymentEntryClass {
+enum MxPaymentEntryClassEnum {
   ccd('CCD'),
   ppd('PPD'),
   tel('TEL'),
   web('WEB');
 
   final String name;
-  const MxPaymentEntryClass(this.name);
+  const MxPaymentEntryClassEnum(this.name);
 }
 
-enum MxPaymentSource {
+enum MxPaymentSourceEnum {
   any('Any'),
   api('API'),
   quickPay('QuickPay'),
@@ -73,10 +73,10 @@ enum MxPaymentSource {
   terminal('Terminal');
 
   final String name;
-  const MxPaymentSource(this.name);
+  const MxPaymentSourceEnum(this.name);
 }
 
-enum MxCardHolderPresent {
+enum MxCardHolderPresentEnum {
   unknown('Unknown'),
   present('Present'),
   notPresent('NotPresent'),
@@ -87,10 +87,10 @@ enum MxCardHolderPresent {
   ecom('Ecom');
 
   final String name;
-  const MxCardHolderPresent(this.name);
+  const MxCardHolderPresentEnum(this.name);
 }
 
-enum MxDevicePresent {
+enum MxDevicePresentEnum {
   unknown('Unknown'),
   attended('Attended'),
   homePc('HomePc'),
@@ -99,10 +99,10 @@ enum MxDevicePresent {
   unattended('Unattended');
 
   final String name;
-  const MxDevicePresent(this.name);
+  const MxDevicePresentEnum(this.name);
 }
 
-enum MxDeviceInputCapability {
+enum MxDeviceInputCapabilityEnum {
   unknown('Unknown'),
   voiceAru('VoiceAru'),
   swipe('Swipe'),
@@ -115,10 +115,10 @@ enum MxDeviceInputCapability {
   chip('Chip');
 
   final String name;
-  const MxDeviceInputCapability(this.name);
+  const MxDeviceInputCapabilityEnum(this.name);
 }
 
-enum MxDeviceLocation {
+enum MxDeviceLocationEnum {
   unknown('Unknown'),
   onPremise('OnPremise'),
   offPremise('OffPremise'),
@@ -128,10 +128,10 @@ enum MxDeviceLocation {
   recurring('Recurring');
 
   final String name;
-  const MxDeviceLocation(this.name);
+  const MxDeviceLocationEnum(this.name);
 }
 
-enum MxPanCaptureMethod {
+enum MxPanCaptureMethodEnum {
   manual('Manual'),
   swipe('Swipe'),
   chip('Chip'),
@@ -141,10 +141,10 @@ enum MxPanCaptureMethod {
   contactlessMobile('ContactlessMobile');
 
   final String name;
-  const MxPanCaptureMethod(this.name);
+  const MxPanCaptureMethodEnum(this.name);
 }
 
-enum MxPartialApprovalSupport {
+enum MxPartialApprovalSupportEnum {
   notSupported('NotSupported'),
   supported('Supported'),
   merchandiseOnly('MerchandiseOnly'),
@@ -152,10 +152,10 @@ enum MxPartialApprovalSupport {
   exclusive('Exclusive');
 
   final String name;
-  const MxPartialApprovalSupport(this.name);
+  const MxPartialApprovalSupportEnum(this.name);
 }
 
-enum MxPaymentResponseStatus {
+enum MxPaymentResponseStatusEnum {
   any('Any'),
 
   /// Authorized
@@ -173,10 +173,10 @@ enum MxPaymentResponseStatus {
   inProgress('InProgress');
 
   final String name;
-  const MxPaymentResponseStatus(this.name);
+  const MxPaymentResponseStatusEnum(this.name);
 }
 
-enum MxFilterDateType {
+enum MxFilterDateTypeEnum {
   any('Any'),
   today('Today'),
   yesterday('Yesterday'),
@@ -187,14 +187,14 @@ enum MxFilterDateType {
   custom('Custom');
 
   final String name;
-  const MxFilterDateType(this.name);
+  const MxFilterDateTypeEnum(this.name);
 }
 
-enum MxAuthToken { basic, jwt }
+enum MxAuthTokenEnum { basic, jwt }
 
-enum MxBaseUrlVersion { v1, v2 }
+enum MxBaseUrlVersionEnum { v1, v2 }
 
-enum MxCustomFieldDataType {
+enum MxCustomFieldDataTypeEnum {
   string('String'),
   integer('Integer'),
   boolean('Boolean'),
@@ -202,10 +202,10 @@ enum MxCustomFieldDataType {
   list('List');
 
   final String name;
-  const MxCustomFieldDataType(this.name);
+  const MxCustomFieldDataTypeEnum(this.name);
 }
 
-enum MxDurationOption {
+enum MxDurationOptionEnum {
   lifetime('Lifetime'),
   month('Month'),
   week('Week'),
@@ -216,5 +216,5 @@ enum MxDurationOption {
   custom('Custom');
 
   final String name;
-  const MxDurationOption(this.name);
+  const MxDurationOptionEnum(this.name);
 }

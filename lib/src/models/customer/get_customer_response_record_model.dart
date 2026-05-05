@@ -9,7 +9,7 @@ class MxGetCustomerRecordModel {
   final String? lastName;
   final String? number;
   final String? email;
-  final MxDurationOption? lastActivity;
+  final MxDurationOptionEnum? lastActivity;
   final bool allowPromotions;
   final String? spendProfile;
   final String? spendProfileIcon;
@@ -43,7 +43,7 @@ class MxGetCustomerRecordModel {
       lastName: json['lastName'],
       number: json['number'],
       email: json['email'],
-      lastActivity: json['lastActivity'] != null ? MxDurationOption.values.firstWhereOrNull((e) => e.name == json['lastActivity']) : null,
+      lastActivity: json['lastActivity'] != null ? MxDurationOptionEnum.values.firstWhereOrNull((e) => e.name == json['lastActivity']) : null,
       allowPromotions: json['allowPromotions'] ?? true,
       spendProfile: json['spendProfile'],
       spendProfileIcon: json['spendProfileIcon'],

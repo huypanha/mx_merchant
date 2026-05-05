@@ -46,9 +46,9 @@ class MXMerchantHomePage extends StatefulWidget {
 class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProviderStateMixin {
   late final TabController _tabController;
 
-  final _consumerKeyController = TextEditingController(text: '');
-  final _consumerSecretController = TextEditingController(text: '');
-  final _merchantIdController = TextEditingController(text: '');
+  final _consumerKeyController = TextEditingController(text: 'YetmOa6AWOHCauUlt1oy8AJv');
+  final _consumerSecretController = TextEditingController(text: 'YPKJ4ovc34VBT5ijxSbPOBT0Zvo=');
+  final _merchantIdController = TextEditingController(text: '1000158009');
 
   bool _isLoading = false;
   String _lastResult = '';
@@ -109,20 +109,13 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       // Make Payment
       final paymentResult = await merchant.payment.makePayment(
         MxPaymentRequestModel(
-          amount: 12.00,
+          amount: 13.00,
           tenderType: .card,
           paymentType: .sale,
-          cardAccount: MxCardModel(
-            number: '4242424242424242',
-            expiryMonth: '12',
-            expiryYear: (DateTime.now().year + 1).toString(),
-            cvv: '123',
-            avsZip: '12345',
-            avsStreet: 'Cambodia',
-          ),
+          cardAccount: MxCardModel(number: '4242424242424242', expiryMonth: '12', expiryYear: (DateTime.now().year + 1).toString(), cvv: '123'),
           customerName: 'Test Customer',
           customerCode: 'TEST001',
-          replayId: 12,
+          replayId: 13,
           source: .api,
         ),
       );
@@ -149,6 +142,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       results['sendReceipt'] = receiptResult;
       log("sendReceipt = ${results['sendReceipt']}");
 
+      log(jsonEncode(results));
       _setResult(jsonEncode(results));
     } catch (e, s) {
       log("Payment flow failed: $e", stackTrace: s);
@@ -166,18 +160,33 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       final merchant = _createMerchant();
       final results = <String, dynamic>{};
 
+      // Create Terminal
+      final createResult = await merchant.terminal.create(
+        MxTerminalRequestModel(
+          providerKey: 'anywherecommerce',
+          enabled: true,
+          name: 'Test Terminal',
+          description: 'Test terminal for demonstration',
+          defaultModel: 'Sherpa',
+          tip: MxTerminalTipModel(options: [MxTerminalTipOptionModel(rate: MxTerminalTipRateModel())]),
+          entryModes: MxTerminalEntryModeModel(),
+          paymentMethods: MxTerminalPaymentMethodModel(),
+        ),
+      );
+      results['createTerminal'] = createResult.toJson();
+
       // Get Terminals
       final terminalsResult = await merchant.terminal.getListOfTerminals();
       results['getTerminals'] = terminalsResult.map((e) => e.toJson()).toList();
 
-      // Create Terminal
-      final createResult = await merchant.terminal.create(
-        MxTerminalRequestModel(providerKey: 'dejavoo', enabled: true, name: 'Test Terminal', description: 'Test terminal for demonstration'),
-      );
-      results['createTerminal'] = createResult;
+      // Delete Terminals
+      final deleteTerminalResult = await merchant.terminal.delete(terminalsResult.first.id.toString());
+      results['deleteTerminalResult'] = deleteTerminalResult;
 
-      _setResult(const JsonEncoder.withIndent('  ').convert(results));
-    } catch (e) {
+      log(jsonEncode(results));
+      _setResult(jsonEncode(results));
+    } catch (e, s) {
+      log("Terminal flow failed: $e", stackTrace: s);
       _setError('Terminal flow failed: $e');
     } finally {
       _setLoading(false);
@@ -194,7 +203,14 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
 
       // Create Customer
       final createResult = await merchant.customer.create(
-        MxCreateCustomerRequestModel(firstName: 'Huy', lastName: 'Panha', email: 'john.doe@example.com', phone: '+1234567890', name: 'Panha Huy'),
+        MxCreateCustomerRequestModel(
+          firstName: 'Huy',
+          lastName: 'Panha',
+          email: 'email@example.com',
+          phone: '+1234567890',
+          name: 'Huy Panha',
+          activeStatus: true,
+        ),
       );
       results['createCustomer'] = createResult.toJson();
 
@@ -238,7 +254,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
         results['getCustomerPayments'] = 'Expected error: $e';
       }
 
-      _setResult(const JsonEncoder.withIndent('  ').convert(results));
+      _setResult(jsonEncode(results));
     } catch (e) {
       _setError('Customer flow failed: $e');
     } finally {
@@ -288,7 +304,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
         results['deleteTransaction'] = 'Expected error: $e';
       }
 
-      _setResult(const JsonEncoder.withIndent('  ').convert(results));
+      _setResult(jsonEncode(results));
     } catch (e) {
       _setError('Terminal transaction flow failed: $e');
     } finally {
@@ -333,7 +349,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
         results['deleteCustomField'] = 'Expected error: $e';
       }
 
-      _setResult(const JsonEncoder.withIndent('  ').convert(results));
+      _setResult(jsonEncode(results));
     } catch (e) {
       _setError('Custom fields flow failed: $e');
     } finally {

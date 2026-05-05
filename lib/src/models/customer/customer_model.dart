@@ -14,7 +14,7 @@ class MxCustomerModel {
   /// Customer Last Name. Creates customer.
   final String? lastName;
 
-  final MxCustomerType? type;
+  final MxCustomerTypeEnum? type;
 
   const MxCustomerModel({this.id, this.name, this.firstName, this.lastName, this.type});
 
@@ -27,7 +27,7 @@ class MxCustomerModel {
       name: json['name'],
       firstName: json['firstName'],
       lastName: json['lastName'],
-      type: json['type'] != null ? MxCustomerType.values.firstWhereOrNull((e) => e.name == json['type']) : null,
+      type: json['type'] != null ? MxCustomerTypeEnum.values.firstWhereOrNull((e) => e.name == json['type']) : null,
     );
   }
 }

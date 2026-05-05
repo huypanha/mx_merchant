@@ -2,7 +2,7 @@ import '../../utils/enums.dart';
 
 class MxCustomerCustomFieldModel {
   /// Field Data type of your custom Field.
-  final MxCustomFieldDataType? fieldDataType;
+  final MxCustomFieldDataTypeEnum? fieldDataType;
 
   /// Id of field
   final int? fieldDefinitionId;

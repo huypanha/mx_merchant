@@ -3,9 +3,10 @@ import 'package:mx_merchant/src/services/api_service.dart';
 import 'package:mx_merchant/src/services/terminal_service.dart';
 import 'package:mx_merchant/src/services/terminal_transaction_service.dart';
 import 'package:mx_merchant/src/services/terminal_transaction_service_impl.dart';
+import 'package:mx_merchant/src/utils/throw_error.dart';
 
+import '../models/terminal/create_terminal_response_model.dart';
 import '../models/terminal/terminal_request_model.dart';
-import '../utils/mx_merchant_exception.dart';
 
 class MxTerminalServiceImpl implements MxTerminalService {
   late ApiService _apiService;
@@ -26,16 +27,12 @@ class MxTerminalServiceImpl implements MxTerminalService {
     if (response.statusCode == 200) {
       return MxTerminalModel.fromJsonArray(response.data);
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
   @override
-  Future<dynamic> create(MxTerminalRequestModel request) async {
+  Future<MxCreateTerminalResponseModel> create(MxTerminalRequestModel request) async {
     final response = await _apiService.post(
       '$_routeV1/providerkey/${request.providerKey}',
       data: request.toJson(),
@@ -43,13 +40,9 @@ class MxTerminalServiceImpl implements MxTerminalService {
       baseUrlVersion: .v2,
     );
     if (response.statusCode == 200) {
-      return response.data;
+      return MxCreateTerminalResponseModel.fromJson(response.data);
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 
@@ -59,11 +52,7 @@ class MxTerminalServiceImpl implements MxTerminalService {
     if (response.statusCode == 200) {
       return true;
     } else {
-      throw MxMerchantException(
-        statusCode: response.statusCode ?? 500,
-        message: response.data['message']?.toString() ?? 'MX Merchant API error',
-        response: response.data,
-      );
+      throw errorParser(response);
     }
   }
 }

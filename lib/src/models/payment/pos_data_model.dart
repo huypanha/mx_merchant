@@ -3,21 +3,21 @@ import 'package:mx_merchant/src/utils/enums.dart';
 
 class MxPosDataModel {
   /// Is cardholder present at the time of payment?
-  final MxCardHolderPresent? cardholderPresence;
+  final MxCardHolderPresentEnum? cardholderPresence;
 
   /// How is the terminal attended.
-  final MxDevicePresent? deviceAttendance;
+  final MxDevicePresentEnum? deviceAttendance;
 
-  final MxDeviceInputCapability? deviceInputCapability;
+  final MxDeviceInputCapabilityEnum? deviceInputCapability;
 
   /// Where is terminal located?
-  final MxDeviceLocation? deviceLocation;
+  final MxDeviceLocationEnum? deviceLocation;
 
   /// Method of PAN entry.
-  final MxPanCaptureMethod? panCaptureMethod;
+  final MxPanCaptureMethodEnum? panCaptureMethod;
 
   /// Does POS support partial approvals?
-  final MxPartialApprovalSupport? partialApprovalSupport;
+  final MxPartialApprovalSupportEnum? partialApprovalSupport;
 
   /// PIN capture capability of device.
   /// For Terminals, send the maximum amount of digits the terminal supports.
@@ -46,18 +46,20 @@ class MxPosDataModel {
   factory MxPosDataModel.fromJson(Map<String, dynamic> json) {
     return MxPosDataModel(
       cardholderPresence: json['cardholderPresence'] != null
-          ? MxCardHolderPresent.values.firstWhereOrNull((e) => e.name == json['cardholderPresence'])
+          ? MxCardHolderPresentEnum.values.firstWhereOrNull((e) => e.name == json['cardholderPresence'])
           : null,
-      deviceAttendance: json['deviceAttendance'] != null ? MxDevicePresent.values.firstWhereOrNull((e) => e.name == json['deviceAttendance']) : null,
+      deviceAttendance: json['deviceAttendance'] != null
+          ? MxDevicePresentEnum.values.firstWhereOrNull((e) => e.name == json['deviceAttendance'])
+          : null,
       deviceInputCapability: json['deviceInputCapability'] != null
-          ? MxDeviceInputCapability.values.firstWhereOrNull((e) => e.name == json['deviceInputCapability'])
+          ? MxDeviceInputCapabilityEnum.values.firstWhereOrNull((e) => e.name == json['deviceInputCapability'])
           : null,
-      deviceLocation: json['deviceLocation'] != null ? MxDeviceLocation.values.firstWhereOrNull((e) => e.name == json['deviceLocation']) : null,
+      deviceLocation: json['deviceLocation'] != null ? MxDeviceLocationEnum.values.firstWhereOrNull((e) => e.name == json['deviceLocation']) : null,
       panCaptureMethod: json['panCaptureMethod'] != null
-          ? MxPanCaptureMethod.values.firstWhereOrNull((e) => e.name == json['panCaptureMethod'])
+          ? MxPanCaptureMethodEnum.values.firstWhereOrNull((e) => e.name == json['panCaptureMethod'])
           : null,
       partialApprovalSupport: json['partialApprovalSupport'] != null
-          ? MxPartialApprovalSupport.values.firstWhereOrNull((e) => e.name == json['partialApprovalSupport'])
+          ? MxPartialApprovalSupportEnum.values.firstWhereOrNull((e) => e.name == json['partialApprovalSupport'])
           : null,
       pinCaptureCapability: json['pinCaptureCapability'],
     );

@@ -10,4 +10,8 @@ class MxTerminalPaymentMethodModel {
   Map<String, dynamic> toJson() {
     return {'credit': credit, 'debit': debit};
   }
+
+  factory MxTerminalPaymentMethodModel.fromJson(Map<String, dynamic> map) {
+    return MxTerminalPaymentMethodModel(credit: map['credit'] ?? true, debit: map['debit'] ?? true);
+  }
 }

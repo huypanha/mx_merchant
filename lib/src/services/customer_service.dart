@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:mx_merchant/src/models/customer/address/create_address_request_model.dart';
 import 'package:mx_merchant/src/models/customer/address/create_address_response_model.dart';
 import 'package:mx_merchant/src/models/customer/create_customer_request_model.dart';
@@ -48,13 +46,6 @@ abstract class MxCustomerService {
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/update-a-customers-address
   Future<MxCreateCustomerAddressResponseModel> updateAddress(MxCreateCustomerAddressRequestModel request) async {
-    throw UnimplementedError();
-  }
-
-  /// * customerId: The ID of the customer to add a note to
-  /// * photo: The file image
-  /// The full documentation can be found here: https://developer.mxmerchant.com/reference/add-a-customer-photo
-  Future<bool> addPhoto({required int customerId, required File photo}) async {
     throw UnimplementedError();
   }
 

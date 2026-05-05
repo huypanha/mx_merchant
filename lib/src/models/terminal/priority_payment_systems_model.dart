@@ -1,13 +1,13 @@
-import 'mx_merchant_model.dart';
+import 'transaction/mx_merchant_model.dart';
 
-class MxTerminalTransactionPriorityPaymentSystemsModel {
+class MxTerminalPriorityPaymentSystemModel {
   /// MX Merchant
   final MxTerminalTransactionMxMerchantModel? mxMerchant;
 
-  MxTerminalTransactionPriorityPaymentSystemsModel({this.mxMerchant});
+  MxTerminalPriorityPaymentSystemModel({this.mxMerchant});
 
-  factory MxTerminalTransactionPriorityPaymentSystemsModel.fromJson(Map<String, dynamic> json) {
-    return MxTerminalTransactionPriorityPaymentSystemsModel(
+  factory MxTerminalPriorityPaymentSystemModel.fromJson(Map<String, dynamic> json) {
+    return MxTerminalPriorityPaymentSystemModel(
       mxMerchant: json['mxmerchant'] == null ? null : MxTerminalTransactionMxMerchantModel.fromJson(json['mxmerchant']),
     );
   }

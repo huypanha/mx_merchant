@@ -30,7 +30,7 @@ class MxCreateCustomerRequestModel {
   final String? addressName;
 
   /// Type of customer
-  final MxCustomerType customerType;
+  final MxCustomerTypeEnum customerType;
 
   /// Customer's email address
   final String? email;
@@ -65,10 +65,6 @@ class MxCreateCustomerRequestModel {
   /// If the spend profile was selected or sent manually, this would be true.
   final bool spendProfileOverride;
 
-  /// If you would like to get the response object, you should supply `echo = true` as a URL parameter.
-  /// This is useful as it keeps the user from having to use a GET call to see the response object information.
-  final bool echo;
-
   MxCreateCustomerRequestModel({
     required this.name,
     required this.firstName,
@@ -91,7 +87,6 @@ class MxCreateCustomerRequestModel {
     this.activeStatus = true,
     this.selectedSpendProfile,
     this.spendProfileOverride = false,
-    this.echo = true,
   });
 
   Map<String, dynamic> toBodyJson() {
@@ -121,6 +116,6 @@ class MxCreateCustomerRequestModel {
   }
 
   Map<String, dynamic> toQueryJson() {
-    return {'echo': echo};
+    return {'echo': true};
   }
 }

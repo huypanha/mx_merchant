@@ -9,7 +9,7 @@ class MxBankAccountModel {
   final String? routingNumber;
 
   /// Account Type.
-  final MxBankAccountType? type;
+  final MxBankAccountTypeEnum? type;
 
   /// Account holder's name
   final String? name;
@@ -57,7 +57,7 @@ class MxBankAccountModel {
     return MxBankAccountModel(
       accountNumber: json['accountNumber'],
       routingNumber: json['routingNumber'],
-      type: json['type'] != null ? MxBankAccountType.values.firstWhereOrNull((e) => e.name == json['type']) : null,
+      type: json['type'] != null ? MxBankAccountTypeEnum.values.firstWhereOrNull((e) => e.name == json['type']) : null,
       name: json['name'],
       alias: json['alias'],
       isDefault: json['isDefault'] != null ? bool.tryParse(json['isDefault'].toString()) : null,

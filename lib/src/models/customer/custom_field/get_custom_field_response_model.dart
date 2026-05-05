@@ -8,7 +8,7 @@ class MxGetCustomFieldResponseModel {
   final String fieldDefinitionName;
 
   /// Type of field.
-  final MxCustomFieldDataType fieldDataType;
+  final MxCustomFieldDataTypeEnum fieldDataType;
 
   /// System Level Field (True by default)
   final bool isSystem;
@@ -40,7 +40,7 @@ class MxGetCustomFieldResponseModel {
     return MxGetCustomFieldResponseModel(
       fieldDefinitionId: json['fieldDefinitionId'] ?? 0,
       fieldDefinitionName: json['fieldDefinitionName'] ?? '',
-      fieldDataType: MxCustomFieldDataType.values.firstWhere((e) => e.name == json['fieldDataType']),
+      fieldDataType: MxCustomFieldDataTypeEnum.values.firstWhere((e) => e.name == json['fieldDataType']),
       isSystem: json['isSystem'] ?? true,
       isRequired: json['isRequired'] ?? true,
       id: json['id'] ?? 0,

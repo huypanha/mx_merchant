@@ -1,11 +1,11 @@
 import '../../utils/enums.dart';
 
 class MxGetPaymentRequestModel {
-  final MxPaymentTransactionType transactionType;
-  final MxPaymentTenderType tenderType;
-  final MxPaymentResponseStatus status;
-  final MxFilterDateType dateType;
-  final MxPaymentSource source;
+  final MxPaymentTransactionTypeEnum transactionType;
+  final MxPaymentTenderTypeEnum tenderType;
+  final MxPaymentResponseStatusEnum status;
+  final MxFilterDateTypeEnum dateType;
+  final MxPaymentSourceEnum source;
 
   /// YYYY-MM-DDThh:mm:ssZ (Required for Custom `dateType`)
   final String? startDate;

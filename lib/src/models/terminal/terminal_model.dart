@@ -67,8 +67,8 @@ class MxTerminalModel {
       providerKey: json['providerKey'],
       externalSource: json['externalSource'],
       externalId: json['externalId'],
-      minPaymentAmount: json['minPaymentAmount'],
-      maxPaymentAmount: json['maxPaymentAmount'],
+      minPaymentAmount: (json['minPaymentAmount'] ?? '').toString(),
+      maxPaymentAmount: (json['maxPaymentAmount'] ?? '').toString(),
       recordCount: int.tryParse(json['recordCount'].toString()) ?? 0,
     );
   }

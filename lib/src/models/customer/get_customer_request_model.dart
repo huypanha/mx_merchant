@@ -17,7 +17,7 @@ class MxGetCustomerRequestModel {
   final String sortField;
 
   /// Filter results to time customer was last active.
-  final MxDurationOption lastActivity;
+  final MxDurationOptionEnum lastActivity;
 
   /// Start date for time filter
   final String? startDate;

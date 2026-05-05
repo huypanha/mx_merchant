@@ -137,7 +137,7 @@ void main() {
 
       expect(request.terminalId, equals('terminal_123'));
       expect(request.amount, equals(0.01));
-      expect(request.type, equals(MxPaymentTransactionType.sale));
+      expect(request.type, equals(MxPaymentTransactionTypeEnum.sale));
       expect(request.vaultCard, isFalse);
       expect(request.replayId, isNull);
     });
@@ -146,14 +146,14 @@ void main() {
       final request = MxTerminalCreateTransactionRequestModel(
         terminalId: 'terminal_123',
         amount: 25.50,
-        type: MxPaymentTransactionType.sale,
+        type: MxPaymentTransactionTypeEnum.sale,
         vaultCard: true,
         replayId: '123456789012345',
       );
 
       expect(request.terminalId, equals('terminal_123'));
       expect(request.amount, equals(25.50));
-      expect(request.type, equals(MxPaymentTransactionType.sale));
+      expect(request.type, equals(MxPaymentTransactionTypeEnum.sale));
       expect(request.vaultCard, isTrue);
       expect(request.replayId, equals('123456789012345'));
     });
@@ -185,7 +185,7 @@ void main() {
       final request = MxTerminalCreateTransactionRequestModel(
         terminalId: 'terminal_123',
         amount: 25.50,
-        type: MxPaymentTransactionType.sale,
+        type: MxPaymentTransactionTypeEnum.sale,
         vaultCard: true,
         replayId: '123456789012345',
       );
@@ -219,14 +219,14 @@ void main() {
 
   group('Enums', () {
     test('MxEnvironment enum values', () {
-      expect(MxMerchantEnvironment.sandbox.name, equals('sandbox'));
-      expect(MxMerchantEnvironment.production.name, equals('production'));
+      expect(MxMerchantEnvironmentEnum.sandbox.name, equals('sandbox'));
+      expect(MxMerchantEnvironmentEnum.production.name, equals('production'));
     });
 
     test('MxTenderType enum values', () {
-      expect(MxPaymentTenderType.card.name, equals('Card'));
-      expect(MxPaymentTenderType.ach.name, equals('ACH'));
-      expect(MxPaymentTenderType.check.name, equals('Check'));
+      expect(MxPaymentTenderTypeEnum.card.name, equals('Card'));
+      expect(MxPaymentTenderTypeEnum.ach.name, equals('ACH'));
+      expect(MxPaymentTenderTypeEnum.check.name, equals('Check'));
     });
   });
 
@@ -298,7 +298,7 @@ void main() {
     test('complete payment flow models work together', () {
       final paymentRequest = MxPaymentRequestModel(
         amount: 100.0,
-        tenderType: MxPaymentTenderType.card,
+        tenderType: MxPaymentTenderTypeEnum.card,
         paymentType: .sale,
         cardAccount: MxCardModel(number: '4242424242424242', expiryMonth: '12', expiryYear: '2025', cvv: '123'),
         customerName: 'Test Customer',
@@ -321,7 +321,7 @@ void main() {
       final createRequest = MxTerminalCreateTransactionRequestModel(
         terminalId: 'terminal_123',
         amount: 50.0,
-        type: MxPaymentTransactionType.sale,
+        type: MxPaymentTransactionTypeEnum.sale,
         vaultCard: false,
         replayId: '123456789012345',
       );

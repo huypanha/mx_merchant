@@ -254,8 +254,10 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
         results['getCustomerPayments'] = 'Expected error: $e';
       }
 
+      log(jsonEncode(results));
       _setResult(jsonEncode(results));
-    } catch (e) {
+    } catch (e, s) {
+      log("Customer flow failed: $e", stackTrace: s);
       _setError('Customer flow failed: $e');
     } finally {
       _setLoading(false);
@@ -273,39 +275,45 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       // Create Terminal Transaction
       final createResult = await merchant.terminal.transaction.create(
         MxTerminalCreateTransactionRequestModel(
-          terminalId: 'test_terminal_id',
+          terminalId: '6EAB751C-2235-4FC6-AD18-625A088399D8',
           amount: 10.00,
           type: .sale,
           vaultCard: false,
-          replayId: '000000000000015',
+          replayId: '000000000000001',
         ),
       );
       results['createTransaction'] = createResult.toJson();
 
       // Get Transaction
-      final getResult = await merchant.terminal.transaction.get('000000000000015');
-      results['getTransaction'] = getResult;
+      final getResult = await merchant.terminal.transaction.get('000000000000001');
+      results['getTransaction'] = getResult.toJson();
 
       // Update Transaction (example with empty data)
       try {
         await merchant.terminal.transaction.update(
-          MxTerminalUpdateTransactionRequestModel(reference: 'test_ref', terminalId: 'test_terminal_id', transactionId: 'test_txn_id'),
+          MxTerminalUpdateTransactionRequestModel(
+            reference: 'test_ref',
+            terminalId: '6EAB751C-2235-4FC6-AD18-625A088399D8',
+            transactionId: 'test_txn_id',
+          ),
         );
         results['updateTransaction'] = 'Success';
       } catch (e) {
         results['updateTransaction'] = 'Expected error: $e';
       }
 
-      // Delete Transaction (example)
+      // Delete Queued Transaction
       try {
-        final deleteResult = await merchant.terminal.transaction.delete('test_terminal_id');
+        final deleteResult = await merchant.terminal.transaction.deleteQueued('6EAB751C-2235-4FC6-AD18-625A088399D8');
         results['deleteTransaction'] = deleteResult;
       } catch (e) {
         results['deleteTransaction'] = 'Expected error: $e';
       }
 
+      log(jsonEncode(results));
       _setResult(jsonEncode(results));
-    } catch (e) {
+    } catch (e, s) {
+      log("Terminal transaction flow failed: $e", stackTrace: s);
       _setError('Terminal transaction flow failed: $e');
     } finally {
       _setLoading(false);
@@ -349,8 +357,10 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
         results['deleteCustomField'] = 'Expected error: $e';
       }
 
+      log(jsonEncode(results));
       _setResult(jsonEncode(results));
-    } catch (e) {
+    } catch (e, s) {
+      log("Custom fields flow failed: $e", stackTrace: s);
       _setError('Custom fields flow failed: $e');
     } finally {
       _setLoading(false);

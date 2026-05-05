@@ -33,6 +33,8 @@ class MxPaymentResponseModel {
   final MxPaymentTransactionTypeEnum? type;
   final int reviewIndicator;
   final MxPaymentSourceEnum? source;
+  final bool isDuplicate;
+  final String? device;
 
   const MxPaymentResponseModel({
     this.created,
@@ -66,6 +68,8 @@ class MxPaymentResponseModel {
     this.type,
     this.reviewIndicator = 0,
     this.source,
+    this.isDuplicate = false,
+    this.device,
   });
 
   factory MxPaymentResponseModel.fromJson(Map<String, dynamic> json) {
@@ -101,6 +105,8 @@ class MxPaymentResponseModel {
       type: json['type'] != null ? MxPaymentTransactionTypeEnum.values.firstWhereOrNull((e) => e.name == json['type']) : null,
       reviewIndicator: int.tryParse(json['merchantId'].toString()) ?? 0,
       source: json['source'] != null ? MxPaymentSourceEnum.values.firstWhereOrNull((e) => e.name == json['source']) : null,
+      isDuplicate: bool.tryParse(json['isDuplicate'].toString()) ?? false,
+      device: json['device'],
     );
   }
 
@@ -136,5 +142,7 @@ class MxPaymentResponseModel {
     'type': type?.name,
     'reviewIndicator': reviewIndicator,
     'source': source?.name,
+    'isDuplicate': isDuplicate,
+    'device': device,
   }..removeWhere((_, value) => value == null);
 }

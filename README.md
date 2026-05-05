@@ -246,15 +246,17 @@ print('Terminal deleted: $deleted');
 
 ### Terminal Transactions
 
+> Not fully tested yet because there is no testing equipment.
+
 ```dart
 // Create a new terminal transaction
 final transactionResult = await merchant.terminal.transaction.create(
   MxTerminalCreateTransactionRequestModel(
-    terminalId: 'test_terminal_id',
+    terminalId: '6EAB751C-2235-4FC6-AD18-XXXXXXXXXXXX',
     amount: 10.00,
     type: .sale,
     vaultCard: false,
-    replayId: '000000000000015',
+    replayId: '000000000000001',
   ),
 );
 
@@ -262,19 +264,19 @@ print('Transaction Status: ${transactionResult.status}');
 print('Transaction Message: ${transactionResult.message}');
 
 // Get transaction details by replay ID
-final transactionDetails = await merchant.terminal.transaction.get('000000000000015');
+final transactionDetails = await merchant.terminal.transaction.get('000000000000001');
 
 // Update an existing terminal transaction
 await merchant.terminal.transaction.update(
   MxTerminalUpdateTransactionRequestModel(
     reference: 'test_ref',
-    terminalId: 'test_terminal_id',
+    terminalId: '6EAB751C-2235-4FC6-AD18-XXXXXXXXXXXX',
     transactionId: 'test_txn_id',
   ),
 );
 
-// Delete a terminal transaction
-final deleted = await merchant.terminal.transaction.delete('test_terminal_id');
+// Delete a queued terminal transaction
+final deleted = await merchant.terminal.transaction.deleteQueued('6EAB751C-2235-4FC6-AD18-XXXXXXXXXXXX');
 print('Transaction deleted: $deleted');
 ```
 
@@ -333,6 +335,12 @@ print('Custom field deleted: $deleted');
 - `getAddress()` - Retrieve customer addresses
 - `updateAddress()` - Update customer address
 
+### Customer Custom Field Service Methods
+
+- `create()` - Create a new custom field for customers
+- `get()` - Retrieve custom fields for a specific customer
+- `delete()` - Delete a custom field by ID
+
 ### Terminal Service Methods
 
 - `getListOfTerminals()` - Retrieve all terminals for the merchant
@@ -344,13 +352,7 @@ print('Custom field deleted: $deleted');
 - `createTransaction()` - Create a new terminal transaction with customizable parameters
 - `updateTransaction()` - Update an existing terminal transaction by reference and terminal ID
 - `getTransaction()` - Retrieve transaction details using replay ID
-- `deleteTransaction()` - Delete a terminal transaction by terminal ID
-
-### Customer Custom Field Service Methods
-
-- `create()` - Create a new custom field for customers
-- `get()` - Retrieve custom fields for a specific customer
-- `delete()` - Delete a custom field by ID
+- `deleteQueued()` - Delete a queued terminal transaction by terminal ID
 
 ### Supported Payment Types
 

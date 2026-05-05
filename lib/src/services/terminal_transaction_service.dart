@@ -1,5 +1,6 @@
 import 'package:mx_merchant/src/models/terminal/transaction/create_transaction_response_model.dart';
 
+import '../models/payment/payment_response_model.dart';
 import '../models/terminal/transaction/create_transaction_request_model.dart';
 import '../models/terminal/transaction/update_transaction_request_model.dart';
 
@@ -16,12 +17,12 @@ abstract class MxTerminalTransactionService {
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-transaction-get
-  Future get(String replayId) async {
+  Future<MxPaymentResponseModel> get(String replayId) async {
     throw UnimplementedError();
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/terminal-transaction-delete
-  Future<bool> delete(String terminalId) async {
+  Future<bool> deleteQueued(String terminalId) async {
     throw UnimplementedError();
   }
 }

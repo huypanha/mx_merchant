@@ -1,6 +1,6 @@
 import 'package:mx_merchant/src/models/terminal/provider_terminal_model.dart';
 
-import 'transaction/provider_transaction_model.dart';
+import 'provider_transaction_model.dart';
 
 class MxTerminalProviderModel {
   /// Key

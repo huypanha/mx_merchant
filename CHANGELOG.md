@@ -1,51 +1,25 @@
-## 0.0.1-beta.6
-
-### ✨ New Features
-* **Customer Management Service**: Added comprehensive customer management with the following capabilities:
-  - `create()` - Create new customers with detailed information
-  - `get()` - Retrieve customers with filtering and pagination
-  - `getACustomer()` - Get specific customer by ID
-  - `update()` - Update existing customer information
-  - `createAddress()` - Create customer addresses
-  - `getAddress()` - Retrieve customer addresses
-  - `updateAddress()` - Update customer addresses
-  - `addNote()` - Add customer notes
-  - `getNote()` - Retrieve customer notes
-  - `getPayments()` - Get customer payment history
-* **Enhanced Customer Models**: Added complete set of customer management models including:
-  - `MxCreateCustomerRequestModel` - Request model for creating customers
-  - `MxCreateCustomerResponseModel` - Response model for customer creation
-  - `MxGetCustomerRequestModel` - Request model for retrieving customers
-  - `MxGetCustomerResponseModel` - Response model for customer retrieval
-  - `MxCreateCustomerAddressRequestModel` - Request model for customer addresses
-  - `MxCreateCustomerAddressResponseModel` - Response model for customer addresses
-  - `MxCustomerNoteModel` - Model for customer notes
-  - `MxCustomerPaymentResponseModel` - Model for customer payments
-* **Service Integration**: Customer management service fully integrated into main MxMerchant class
-* **Example App Enhancement**: Added Customer Management tab to demonstration app with complete workflow examples
-* **Documentation Updates**: Updated README.md with comprehensive Customer Management usage examples and API reference
-
-### 🔧 Improvements
-* **Enhanced Error Handling**: Improved service response and error handling across all services
-* **Payment API Testing**: Comprehensive testing and validation of payment API functionality
-* **Service Reliability**: Enhanced service implementations with better error handling and response management
-* **Code Quality**: Improved code structure and reliability across all service implementations
-
 ## 0.0.1-beta.5
 
 ### ✨ New Features
-* **Customer Custom Field Service**: Added comprehensive customer custom field management with the following capabilities:
-  - `create()` - Create new custom fields for customers with various data types
-  - `get()` - Retrieve custom fields for specific customers
-  - `delete()` - Delete custom fields by ID
-* **Enhanced Customer Models**: Added complete set of customer custom field models including:
-  - `MxCreateCustomFieldRequestModel` - Request model for creating custom fields
-  - `MxCreateCustomFieldResponseModel` - Response model for custom field creation
-  - `MxGetCustomFieldResponseModel` - Response model for retrieving customer custom fields
-  - `MxCustomFieldOptionModel` - Model for custom field options
-* **Service Integration**: Customer custom field service fully integrated into main MxMerchant class
-* **Example App Enhancement**: Added Customer Custom Fields tab to demonstration app with complete workflow examples
-* **Documentation Updates**: Updated README.md with comprehensive Customer Custom Field usage examples and API reference
+* **Customer Management Service**: Added comprehensive customer management with CRUD operations, address management, notes, and payment history
+* **Customer Models**: Complete set of customer management models for requests and responses
+* **Customer Custom Field Service**: Added comprehensive customer custom field management with create, get, and delete operations
+* **Enhanced Customer Models**: Complete set of customer custom field models for various data types and options
+* **Service Integration**: Customer management and custom field services fully integrated into main MxMerchant class
+* **Example App**: Added Customer Management and Custom Fields tabs with complete workflow examples
+* **Documentation**: Updated README.md with comprehensive Customer Management and Custom Field usage examples
+
+### 🔧 Improvements
+* **Enhanced Error Handling**: Improved service response and error handling across all services
+* **API Testing**: Comprehensive testing and validation of payment API functionality
+* **Service Reliability**: Enhanced service implementations with better error handling
+* **Terminal Transaction API**: Updated delete method to `deleteQueued()`
+* **Example App**: 
+  - Added comprehensive tabbed interface with Material 3 design
+  - Real-time API response display with copy-to-clipboard functionality
+  - Enhanced error handling and user feedback
+* **Documentation**: Updated README.md transaction flow examples and API method names
+* **Authentication**: Enhanced credential management and sandbox environment handling
 
 ## 0.0.1-beta.4
 

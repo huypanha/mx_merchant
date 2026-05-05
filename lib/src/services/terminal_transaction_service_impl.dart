@@ -1,9 +1,10 @@
-import 'package:mx_merchant/src/models/terminal/transaction/update_transaction_request_model.dart';
+import 'dart:convert';
+import 'dart:developer';
+
+import 'package:mx_merchant/mx_merchant.dart';
 import 'package:mx_merchant/src/services/api_service.dart';
 import 'package:mx_merchant/src/services/terminal_transaction_service.dart';
 
-import '../models/terminal/transaction/create_transaction_request_model.dart';
-import '../models/terminal/transaction/create_transaction_response_model.dart';
 import '../utils/throw_error.dart';
 
 class MxTerminalTransactionServiceImpl implements MxTerminalTransactionService {
@@ -22,9 +23,13 @@ class MxTerminalTransactionServiceImpl implements MxTerminalTransactionService {
       baseUrlVersion: .v2,
       data: request.toJson(),
     );
+    log('MxTerminalTransactionServiceImpl.create = ${jsonEncode(response.data)}');
     if (response.statusCode == 200) {
       return MxTerminalCreateTransactionResponseModel.fromJson(Map<String, dynamic>.from(response.data));
     } else {
+      if (response.data.runtimeType == String) {
+        response.data = {'message': response.data};
+      }
       throw errorParser(response);
     }
   }
@@ -36,6 +41,7 @@ class MxTerminalTransactionServiceImpl implements MxTerminalTransactionService {
       authToken: .jwt,
       baseUrlVersion: .v2,
     );
+    log('MxTerminalTransactionServiceImpl.update = ${response.data}');
     if (response.statusCode == 200) {
       return response.data;
     } else {
@@ -44,18 +50,20 @@ class MxTerminalTransactionServiceImpl implements MxTerminalTransactionService {
   }
 
   @override
-  Future<dynamic> get(String replayId) async {
+  Future<MxPaymentResponseModel> get(String replayId) async {
     final response = await _apiService.get('checkout/v3/payment', query: {'merchantId': _apiService.merchantId, 'replayId': replayId});
+    log('MxTerminalTransactionServiceImpl.get = ${response.data}');
     if (response.statusCode == 200) {
-      return response.data;
+      return MxPaymentResponseModel.fromJson(response.data);
     } else {
       throw errorParser(response);
     }
   }
 
   @override
-  Future<bool> delete(String terminalId) async {
+  Future<bool> deleteQueued(String terminalId) async {
     final response = await _apiService.get('$_routeV1/merchantid/${_apiService.merchantId}/terminalid/$terminalId');
+    log('MxTerminalTransactionServiceImpl.delete = ${response.data}');
     if (response.statusCode == 204) {
       return true;
     } else {

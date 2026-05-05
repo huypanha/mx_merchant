@@ -74,5 +74,5 @@ platforms:
   web:
 
 screenshots:
-  - description: "LOGO"
+  - description: "MX Merchant Logo"
     path: assets/images/mx_logo.png

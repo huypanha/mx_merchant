@@ -212,13 +212,12 @@ print('Available terminals: ${terminals.length}');
 // Create a new terminal
 final newTerminal = await merchant.terminal.create(
   MxTerminalRequestModel(
-    providerKey: 'dejavoo',
+    providerKey: 'anywherecommerce',
     enabled: true,
-    name: 'Main Terminal',
-    description: 'Primary payment terminal',
+    name: 'Test Terminal',
+    description: 'Test terminal for demonstration',
+    defaultModel: 'Sherpa',
     tip: MxTerminalTipModel(
-      allow: true,
-      allowCustom: true,
       options: [
         MxTerminalTipOptionModel(
           rate: MxTerminalTipRateModel(value: 15, isPercentage: true),
@@ -238,8 +237,10 @@ final newTerminal = await merchant.terminal.create(
   ),
 );
 
+print('Created Terminal ID: ${newTerminal.id}');
+
 // Delete a terminal
-final deleted = await merchant.terminal.delete('terminal_id_here');
+final deleted = await merchant.terminal.delete(terminals.first.id.toString());
 print('Terminal deleted: $deleted');
 ```
 
@@ -249,31 +250,31 @@ print('Terminal deleted: $deleted');
 // Create a new terminal transaction
 final transactionResult = await merchant.terminal.transaction.create(
   MxTerminalCreateTransactionRequestModel(
-    terminalId: 'terminal_123',
-    amount: 25.50,
+    terminalId: 'test_terminal_id',
+    amount: 10.00,
     type: .sale,
     vaultCard: false,
-    replayId: '123456789012345', // Optional 15-digit unique string
+    replayId: '000000000000015',
   ),
 );
 
 print('Transaction Status: ${transactionResult.status}');
 print('Transaction Message: ${transactionResult.message}');
 
+// Get transaction details by replay ID
+final transactionDetails = await merchant.terminal.transaction.get('000000000000015');
+
 // Update an existing terminal transaction
 await merchant.terminal.transaction.update(
   MxTerminalUpdateTransactionRequestModel(
-    reference: 'ref_12345',
-    terminalId: 'terminal_123',
-    transactionId: 'txn_67890',
+    reference: 'test_ref',
+    terminalId: 'test_terminal_id',
+    transactionId: 'test_txn_id',
   ),
 );
 
-// Get transaction details by replay ID
-final transactionDetails = await merchant.terminal.transaction.get('123456789012345');
-
 // Delete a terminal transaction
-final deleted = await merchant.terminal.transaction.delete('terminal_123');
+final deleted = await merchant.terminal.transaction.delete('test_terminal_id');
 print('Transaction deleted: $deleted');
 ```
 
@@ -331,7 +332,6 @@ print('Custom field deleted: $deleted');
 - `createAddress()` - Create customer address
 - `getAddress()` - Retrieve customer addresses
 - `updateAddress()` - Update customer address
-- `addPhoto()` - Add customer photo
 
 ### Terminal Service Methods
 

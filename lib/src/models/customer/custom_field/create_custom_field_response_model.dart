@@ -47,7 +47,7 @@ class MxCreateCustomFieldResponseModel {
       'isSystem': isSystem,
       'isDeleted': isDeleted,
       'isRequired': isRequired,
-      'options': options,
+      'options': options.map((e) => e.toJson()).toList(),
     }..removeWhere((_, v) => v == null);
   }
 

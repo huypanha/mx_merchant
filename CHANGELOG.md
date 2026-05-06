@@ -1,3 +1,22 @@
+## 0.0.1-beta.7
+
+### 💥 Breaking Changes
+* **Customer Custom Fields**: Removed `echo` parameter from `MxCreateCustomFieldRequestModel` as it is now internally handled.
+* **Customer Custom Fields**: `get()` method in custom field service now uses GET request instead of POST.
+
+### ✨ New Features
+* **Customer Custom Fields**: Added `options` parameter support to `MxCreateCustomFieldRequestModel` for creating fields with predefined options.
+
+### 🐛 Bug Fixes
+* **Error Handling**: Improved error parsing to support uppercase `Message` key in API responses.
+* **Customer Custom Fields**: Fixed `options` serialization in `MxCreateCustomFieldResponseModel`.
+* **Customer Custom Fields**: Fixed type casting errors in `fromJsonArray` for custom field response models.
+* **Customer Custom Fields**: Fixed `delete()` method to correctly expect `204 No Content` HTTP status instead of `200 OK`.
+
+### 📝 Documentation
+* **README**: Updated Customer Custom Fields example to demonstrate the usage of `options`.
+* **README**: Fixed undefined variable usage in the custom field delete example.
+
 ## 0.0.1-beta.6
 
 ### 💥 Breaking Changes

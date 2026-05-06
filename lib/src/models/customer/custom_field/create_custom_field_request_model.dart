@@ -29,10 +29,6 @@ class MxCreateCustomFieldRequestModel {
   /// Only required for Boolean and List. Name and Value should match.
   final List<MxCustomFieldOptionModel>? options;
 
-  /// If you would like to get the response object, you should supply `echo = true` as a URL parameter.
-  /// This is useful as it keeps the user from having to use a GET call to see the response object information.
-  final bool echo;
-
   MxCreateCustomFieldRequestModel({
     this.id,
     this.name,
@@ -43,7 +39,6 @@ class MxCreateCustomFieldRequestModel {
     this.isSystem = false,
     this.isRequired = false,
     this.options,
-    this.echo = true,
   });
 
   Map<String, dynamic> toBodyJson() {
@@ -61,6 +56,6 @@ class MxCreateCustomFieldRequestModel {
   }
 
   Map<String, dynamic> toQueryJson() {
-    return {'echo': echo};
+    return {'echo': true};
   }
 }

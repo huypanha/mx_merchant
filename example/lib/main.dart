@@ -295,7 +295,7 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       final getResult = await merchant.terminal.transaction.get('000000000000001');
       results['getTransaction'] = getResult.toJson();
 
-      // Update Transaction (example with empty data)
+      // Update Transaction
       try {
         await merchant.terminal.transaction.update(
           MxTerminalUpdateTransactionRequestModel(
@@ -338,31 +338,23 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       // Create Custom Field
       final createResult = await merchant.customer.customField.create(
         MxCreateCustomFieldRequestModel(
-          name: 'Customer Rating',
-          fieldName: 'customer_rating',
+          name: 'Test 4',
+          fieldName: 'test_4',
           fieldDataType: .decimal,
           isRequired: false,
-          echo: true,
+          options: [MxCustomFieldOptionModel(name: 'Rating', value: '5')],
         ),
       );
       results['createCustomField'] = createResult.toJson();
 
       // Get Custom Fields for a customer
-      try {
-        final getResults = await merchant.customer.customField.get('test_customer_id');
-        results['getCustomFields'] = getResults.map((e) => e.toJson()).toList();
-      } catch (e) {
-        results['getCustomFields'] = 'Expected error: $e';
-      }
+      String customerId = '10000001658094';
+      final getResults = await merchant.customer.customField.get(customerId);
+      results['getCustomFields'] = getResults.map((e) => e.toJson()).toList();
 
-      // Delete Custom Field (example)
-      try {
-        final fieldId = createResult.id;
-        final deleteResult = await merchant.customer.customField.delete(fieldId);
-        results['deleteCustomField'] = deleteResult;
-      } catch (e) {
-        results['deleteCustomField'] = 'Expected error: $e';
-      }
+      // Delete Custom Field
+      final deleteResult = await merchant.customer.customField.delete(createResult.id);
+      results['deleteCustomField'] = deleteResult;
 
       log(jsonEncode(results));
       _setResult(jsonEncode(results));

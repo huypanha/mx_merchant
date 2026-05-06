@@ -62,5 +62,6 @@ class MxGetCustomFieldResponseModel {
     }..removeWhere((_, v) => v == null);
   }
 
-  static List<MxGetCustomFieldResponseModel> fromJsonArray(List array) => array.map((e) => MxGetCustomFieldResponseModel.fromJson(e)).toList();
+  static List<MxGetCustomFieldResponseModel> fromJsonArray(List array) =>
+      array.map((e) => MxGetCustomFieldResponseModel.fromJson(Map<String, dynamic>.from(e))).toList();
 }

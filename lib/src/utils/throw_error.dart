@@ -9,6 +9,8 @@ MxMerchantException errorParser(Response response) {
       message = Map.from(response.data)['details']?.toString() ?? 'MX Merchant API error';
     } else if (Map.from(response.data).containsKey('message')) {
       message = Map.from(response.data)['message']?.toString() ?? 'MX Merchant API error';
+    } else if (Map.from(response.data).containsKey('Message')) {
+      message = Map.from(response.data)['Message']?.toString() ?? 'MX Merchant API error';
     }
   }
   return MxMerchantException(statusCode: response.statusCode ?? 500, message: message, response: response.data);

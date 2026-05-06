@@ -15,5 +15,6 @@ class MxCustomFieldOptionModel {
     return MxCustomFieldOptionModel(name: json['name'], value: json['value']);
   }
 
-  static List<MxCustomFieldOptionModel> fromJsonArray(List array) => array.map((e) => MxCustomFieldOptionModel.fromJson(e)).toList();
+  static List<MxCustomFieldOptionModel> fromJsonArray(List array) =>
+      array.map((e) => MxCustomFieldOptionModel.fromJson(Map<String, dynamic>.from(e))).toList();
 }

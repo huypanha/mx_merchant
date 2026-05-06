@@ -234,6 +234,9 @@ final customField = await merchant.customer.customField.create(
     fieldName: 'customer_rating',
     fieldDataType: .decimal,
     isRequired: false,
+    options: [
+      MxCustomFieldOptionModel(name: 'Rating', value: '5'),
+    ],
   ),
 );
 
@@ -251,7 +254,7 @@ for (final field in customerFields) {
 }
 
 // Delete a custom field
-final deleted = await merchant.customer.customField.delete(fieldId);
+final deleted = await merchant.customer.customField.delete(customField.id);
 print('Custom field deleted: $deleted');
 ```
 

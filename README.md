@@ -150,9 +150,10 @@ final customer = await merchant.customer.create(
   MxCreateCustomerRequestModel(
     firstName: 'Huy',
     lastName: 'Panha',
-    email: 'Huy.Panha@example.com',
+    email: 'email@example.com',
     phone: '+1234567890',
-    company: 'A B',
+    name: 'Huy Panha',
+    activeStatus: true,
   ),
 );
 
@@ -161,45 +162,97 @@ print('Customer Name: ${customer.firstName} ${customer.lastName}');
 
 // Get multiple customers with filters
 final customers = await merchant.customer.get(
-  MxGetCustomerRequestModel(
-    limit: 10,
-    offset: 0,
-  ),
+  MxGetCustomerRequestModel(limit: 10),
 );
 
-print('Found ${customers.length} customers');
+print('Found ${customers.records?.length} customers');
 
 // Get a specific customer
-final specificCustomer = await merchant.customer.getACustomer(customer.id!);
+final specificCustomer = await merchant.customer.getACustomer(customer.id);
 print('Customer Details: ${specificCustomer.firstName} ${specificCustomer.lastName}');
 
-// Update customer information
-final updatedCustomer = await merchant.customer.update(
-  customerId: customer.id!,
-  customerData: MxCreateCustomerRequestModel(
-    firstName: 'Huy',
-    lastName: 'Panha',
-    email: 'Huy.Panha@example.com',
+// Update customer information using copyWith
+final updateResult = await merchant.customer.update(
+  customerData: customer.copyWith(name: 'Huy Panha Updated').toRequestModel(),
+  customerId: customer.id,
+);
+
+print('Customer updated: $updateResult');
+
+// Create a customer address
+final address = await merchant.customer.createAddress(
+  MxCreateCustomerAddressRequestModel(
+    customerId: customer.id,
+    address1: customer.address1,
+    address2: customer.address2,
+    city: customer.city,
+    state: customer.state,
+    zip: customer.zip,
   ),
 );
+
+print('Address ID: ${address.id}');
+
+// Get customer addresses
+final addresses = await merchant.customer.getAddress(customer.id);
+print('Customer has ${addresses.length} addresses');
+
+// Update customer address
+final addressUpdated = await merchant.customer.updateAddress(
+  address.toRequestModel().copyWith(customerId: customer.id),
+);
+
+print('Address updated: $addressUpdated');
 
 // Add a note to customer
 final noteAdded = await merchant.customer.addNote(
-  customerId: customer.id!,
-  note: 'VIP customer - prefers email communication',
+  customerId: customer.id,
+  note: 'Test customer created via API',
 );
 
 // Get customer notes
-final notes = await merchant.customer.getNote(customer.id!);
+final notes = await merchant.customer.getNote(customer.id);
 print('Customer has ${notes.length} notes');
 
 // Get customer payments
 final payments = await merchant.customer.getPayments(
-  customerId: customer.id!,
+  customerId: customer.id,
   offset: 0,
   limit: 10,
 );
-print('Customer has ${payments.length} payments');
+
+print('Customer payments: ${payments.toJson()}');
+```
+
+### Customer Custom Fields
+
+```dart
+// Create a new custom field for customers
+final customField = await merchant.customer.customField.create(
+  MxCreateCustomFieldRequestModel(
+    name: 'Customer Rating',
+    fieldName: 'customer_rating',
+    fieldDataType: .decimal,
+    isRequired: false,
+  ),
+);
+
+print('Custom Field ID: ${customField.id}');
+print('Field Name: ${customField.name}');
+
+// Get custom fields for a specific customer
+final customerFields = await merchant.customer.customField.get('customer_id_123');
+print('Customer has ${customerFields.length} custom fields');
+
+for (final field in customerFields) {
+  print('Field: ${field.fieldDefinitionName}');
+  print('Type: ${field.fieldDataType}');
+  print('Required: ${field.isRequired}');
+}
+
+// Delete a custom field
+final deleted = await merchant.customer.customField.delete(fieldId);
+print('Custom field deleted: $deleted');
 ```
 
 ### Terminal Management
@@ -278,38 +331,6 @@ await merchant.terminal.transaction.update(
 // Delete a queued terminal transaction
 final deleted = await merchant.terminal.transaction.deleteQueued('6EAB751C-2235-4FC6-AD18-XXXXXXXXXXXX');
 print('Transaction deleted: $deleted');
-```
-
-### Customer Custom Fields
-
-```dart
-// Create a new custom field for customers
-final customField = await merchant.customer.customField.create(
-  MxCreateCustomFieldRequestModel(
-    name: 'Customer Rating',
-    fieldName: 'customer_rating',
-    fieldDataType: .decimal,
-    isRequired: false,
-    echo: true,
-  ),
-);
-
-print('Custom Field ID: ${customField.id}');
-print('Field Name: ${customField.name}');
-
-// Get custom fields for a specific customer
-final customerFields = await merchant.customer.customField.get('customer_id_123');
-print('Customer has ${customerFields.length} custom fields');
-
-for (final field in customerFields) {
-  print('Field: ${field.fieldDefinitionName}');
-  print('Type: ${field.fieldDataType}');
-  print('Required: ${field.isRequired}');
-}
-
-// Delete a custom field
-final deleted = await merchant.customer.customField.delete(fieldId);
-print('Custom field deleted: $deleted');
 ```
 
 ## API Reference

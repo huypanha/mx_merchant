@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 import '../../utils/enums.dart';
 
 class MxCustomerCustomFieldModel {
@@ -22,4 +24,16 @@ class MxCustomerCustomFieldModel {
     return {'fieldDataType': fieldDataType?.name, 'fieldDefinitionId': fieldDefinitionId, 'isRequired': isRequired, 'name': name, 'value': value}
       ..removeWhere((_, v) => v == null);
   }
+
+  factory MxCustomerCustomFieldModel.fromJson(Map<String, dynamic> json) {
+    return MxCustomerCustomFieldModel(
+      fieldDataType: MxCustomFieldDataTypeEnum.values.firstWhereOrNull((e) => e.name == json['fieldDataType']),
+      fieldDefinitionId: int.tryParse(json['fieldDefinitionId'].toString()),
+      isRequired: bool.tryParse(json['isRequired'].toString()),
+      name: json['name'],
+      value: json['value'],
+    );
+  }
+
+  static List<MxCustomerCustomFieldModel> fromJsonArray(List array) => array.map((e) => MxCustomerCustomFieldModel.fromJson(e)).toList();
 }

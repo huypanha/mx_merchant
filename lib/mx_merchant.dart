@@ -3,6 +3,8 @@ library;
 export 'src/models/bank/bank_account_model.dart';
 export 'src/models/card/card_model.dart';
 export 'src/models/card/card_response_model.dart';
+export 'src/models/customer/address/create_address_request_model.dart';
+export 'src/models/customer/address/create_address_response_model.dart';
 export 'src/models/customer/create_customer_custom_field_model.dart';
 export 'src/models/customer/create_customer_request_model.dart';
 export 'src/models/customer/create_customer_response_model.dart';

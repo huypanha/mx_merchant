@@ -1,3 +1,5 @@
+import 'package:mx_merchant/src/models/customer/address/create_address_request_model.dart';
+
 class MxCreateCustomerAddressResponseModel {
   final int id;
   final String? name;
@@ -51,4 +53,8 @@ class MxCreateCustomerAddressResponseModel {
 
   static List<MxCreateCustomerAddressResponseModel> fromJsonArray(List array) =>
       array.map((e) => MxCreateCustomerAddressResponseModel.fromJson(Map<String, dynamic>.from(e))).toList();
+
+  MxCreateCustomerAddressRequestModel toRequestModel() {
+    return MxCreateCustomerAddressRequestModel.fromJson(toJson());
+  }
 }

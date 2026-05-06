@@ -59,22 +59,22 @@ class MxCustomerServiceImpl implements MxCustomerService {
   }
 
   @override
-  Future<MxCreateCustomerResponseModel> update({required int customerId, required MxCreateCustomerRequestModel customerData}) async {
+  Future<bool> update({required int customerId, required MxCreateCustomerRequestModel customerData}) async {
     final data = customerData.toBodyJson();
     data['merchantId'] = _apiService.merchantId;
     final response = await _apiService.put('$_route/$customerId', data: data);
-    if (response.statusCode == 201) {
-      return MxCreateCustomerResponseModel.fromJson(Map<String, dynamic>.from(response.data));
+    if (response.statusCode == 200) {
+      return true;
     } else {
       throw errorParser(response);
     }
   }
 
   @override
-  Future<List<MxCreateCustomerAddressResponseModel>> createAddress(MxCreateCustomerAddressRequestModel request) async {
+  Future<MxCreateCustomerAddressResponseModel> createAddress(MxCreateCustomerAddressRequestModel request) async {
     final response = await _apiService.post('${_route}address', data: request.toBodyJson(), query: request.toQueryJson());
-    if (response.statusCode == 200) {
-      return MxCreateCustomerAddressResponseModel.fromJsonArray(response.data);
+    if (response.statusCode == 201) {
+      return MxCreateCustomerAddressResponseModel.fromJson(response.data);
     } else {
       throw errorParser(response);
     }
@@ -91,10 +91,10 @@ class MxCustomerServiceImpl implements MxCustomerService {
   }
 
   @override
-  Future<MxCreateCustomerAddressResponseModel> updateAddress(MxCreateCustomerAddressRequestModel request) async {
+  Future<bool> updateAddress(MxCreateCustomerAddressRequestModel request) async {
     final response = await _apiService.put('${_route}address', data: request.toBodyJson(), query: request.toQueryJson());
     if (response.statusCode == 200) {
-      return MxCreateCustomerAddressResponseModel.fromJson(Map<String, dynamic>.from(response.data));
+      return true;
     } else {
       throw errorParser(response);
     }

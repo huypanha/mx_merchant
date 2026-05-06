@@ -29,10 +29,6 @@ class MxCreateCustomerAddressRequestModel {
   /// Is this the default address
   final bool isDefault;
 
-  /// If you would like to get the response object, you should supply `echo = true` as a URL parameter.
-  /// This is useful as it keeps the user from having to use a GET call to see the response object information.
-  final bool echo;
-
   MxCreateCustomerAddressRequestModel({
     required this.customerId,
     this.name,
@@ -43,7 +39,6 @@ class MxCreateCustomerAddressRequestModel {
     this.zip,
     this.country,
     this.isDefault = true,
-    this.echo = true,
     this.addressId,
   });
 
@@ -61,6 +56,47 @@ class MxCreateCustomerAddressRequestModel {
   }
 
   Map<String, dynamic> toQueryJson() {
-    return {'id': customerId, 'echo': echo, 'subId': addressId};
+    return {'id': customerId, 'echo': true, 'subId': addressId};
+  }
+
+  factory MxCreateCustomerAddressRequestModel.fromJson(Map<String, dynamic> json) {
+    return MxCreateCustomerAddressRequestModel(
+      customerId: int.tryParse(json['customerId'].toString()) ?? 0,
+      addressId: json['id'],
+      name: json['name'],
+      address1: json['address1'],
+      address2: json['address2'],
+      city: json['city'],
+      state: json['state'],
+      zip: json['zip']?.toString(),
+      country: json['country'],
+      isDefault: bool.tryParse(json['isDefault'].toString()) ?? true,
+    );
+  }
+
+  MxCreateCustomerAddressRequestModel copyWith({
+    int? customerId,
+    int? addressId,
+    String? name,
+    String? address1,
+    String? address2,
+    String? city,
+    String? state,
+    String? zip,
+    String? country,
+    bool? isDefault,
+  }) {
+    return MxCreateCustomerAddressRequestModel(
+      customerId: customerId ?? this.customerId,
+      addressId: addressId ?? this.addressId,
+      name: name ?? this.name,
+      address1: address1 ?? this.address1,
+      address2: address2 ?? this.address2,
+      city: city ?? this.city,
+      state: state ?? this.state,
+      zip: zip ?? this.zip,
+      country: country ?? this.country,
+      isDefault: isDefault ?? this.isDefault,
+    );
   }
 }

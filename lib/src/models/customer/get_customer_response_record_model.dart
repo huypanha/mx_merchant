@@ -17,6 +17,7 @@ class MxGetCustomerRecordModel {
   final bool isTaxExempt;
   final String? displayColor;
   final bool activeStatus;
+  final bool spendProfileOverride;
 
   MxGetCustomerRecordModel({
     this.id = 0,
@@ -33,6 +34,7 @@ class MxGetCustomerRecordModel {
     this.isTaxExempt = true,
     this.displayColor,
     this.activeStatus = true,
+    this.spendProfileOverride = false,
   });
 
   factory MxGetCustomerRecordModel.fromJson(Map<String, dynamic> json) {
@@ -51,6 +53,7 @@ class MxGetCustomerRecordModel {
       isTaxExempt: json['isTaxExempt'] ?? true,
       displayColor: json['displayColor'],
       activeStatus: json['activeStatus'] ?? true,
+      spendProfileOverride: json['spendProfileOverride'] ?? false,
     );
   }
 
@@ -70,6 +73,7 @@ class MxGetCustomerRecordModel {
       'isTaxExempt': isTaxExempt,
       'displayColor': displayColor,
       'activeStatus': activeStatus,
+      'spendProfileOverride': spendProfileOverride,
     }..removeWhere((_, v) => v == null);
   }
 }

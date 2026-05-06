@@ -1,3 +1,25 @@
+## 0.0.1-beta.6
+
+### 💥 Breaking Changes
+* **Customer Service**: `update()` now returns `Future<bool>` instead of `Future<MxCreateCustomerResponseModel>`.
+* **Customer Service**: `updateAddress()` now returns `Future<bool>` instead of `Future<MxCreateCustomerAddressResponseModel>`.
+* **Customer Service**: `createAddress()` now returns a single `Future<MxCreateCustomerAddressResponseModel>` instead of a list.
+
+### ✨ New Features
+* **Customer Models**: Added `copyWith()` and `toRequestModel()` methods to `MxCreateCustomerResponseModel` and `MxCreateCustomerAddressResponseModel` to simplify updating customer records and addresses.
+* **Customer Models**: Added `email`, `mobile`, `phone`, `customFields`, and `selectedSpendProfile` to `MxCreateCustomerResponseModel`.
+* **Customer Models**: Added `spendProfileOverride` field to `MxGetCustomerRecordModel`.
+
+### 🐛 Bug Fixes
+* **Customer Models**: Fixed assertion logic in `MxGetCustomerRequestModel` for custom time filters.
+
+### 📝 Documentation
+* **README**: Updated Customer Management examples to match the actual example app usage, including `name` and `activeStatus` fields in customer creation
+* **README**: Updated customer update example to use the `copyWith().toRequestModel()` pattern
+* **README**: Added Customer Address management examples (create, get, update)
+* **README**: Fixed customer `get()` response to use `records` property instead of direct list access
+* **README**: Aligned all Customer and Custom Fields examples with `example/lib/main.dart`
+
 ## 0.0.1-beta.5
 
 ### ✨ New Features

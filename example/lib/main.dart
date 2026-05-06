@@ -46,9 +46,9 @@ class MXMerchantHomePage extends StatefulWidget {
 class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProviderStateMixin {
   late final TabController _tabController;
 
-  final _consumerKeyController = TextEditingController(text: 'YetmOa6AWOHCauUlt1oy8AJv');
-  final _consumerSecretController = TextEditingController(text: 'YPKJ4ovc34VBT5ijxSbPOBT0Zvo=');
-  final _merchantIdController = TextEditingController(text: '1000158009');
+  final _consumerKeyController = TextEditingController(text: '');
+  final _consumerSecretController = TextEditingController(text: '');
+  final _merchantIdController = TextEditingController(text: '');
 
   bool _isLoading = false;
   String _lastResult = '';
@@ -215,46 +215,53 @@ class _MXMerchantHomePageState extends State<MXMerchantHomePage> with TickerProv
       results['createCustomer'] = createResult.toJson();
 
       // Get Customers
-      try {
-        final getResults = await merchant.customer.get(MxGetCustomerRequestModel(limit: 10));
-        results['getCustomers'] = getResults.records?.map((e) => e.toJson()).toList();
-      } catch (e) {
-        results['getCustomers'] = 'Expected error: $e';
-      }
+      final getResults = await merchant.customer.get(MxGetCustomerRequestModel(limit: 10));
+      results['getCustomers'] = getResults.records?.map((e) => e.toJson()).toList();
 
       // Get Specific Customer
-      try {
-        final getCustomerResult = await merchant.customer.getACustomer(createResult.id);
-        results['getCustomer'] = getCustomerResult.toJson();
-      } catch (e) {
-        results['getCustomer'] = 'Expected error: $e';
-      }
+      final getCustomerResult = await merchant.customer.getACustomer(createResult.id);
+      results['getCustomer'] = getCustomerResult.toJson();
+
+      // Update Customer
+      final updateCustomerResult = await merchant.customer.update(
+        customerData: createResult.copyWith(name: 'Huy Panha Updated').toRequestModel(),
+        customerId: createResult.id,
+      );
+      results['updateCustomerResult'] = updateCustomerResult;
+
+      // Create a customer address
+      final createAddress = await merchant.customer.createAddress(
+        MxCreateCustomerAddressRequestModel(
+          customerId: createResult.id,
+          address1: createResult.address1,
+          address2: createResult.address2,
+          city: createResult.city,
+          state: createResult.state,
+          zip: createResult.zip,
+        ),
+      );
+      results['createAddress'] = createAddress.toJson();
+
+      // Get customer addresses
+      final getAddresses = await merchant.customer.getAddress(createResult.id);
+      results['getAddresses'] = getAddresses.map((e) => e.toJson()).toList();
+
+      // Update customer addresses
+      final updateAddresses = await merchant.customer.updateAddress(createAddress.toRequestModel().copyWith(customerId: createResult.id));
+      results['updateAddresses'] = updateAddresses;
 
       // Add Note to Customer
-      try {
-        final noteAdded = await merchant.customer.addNote(customerId: createResult.id, note: 'Test customer created via API');
-        results['addNote'] = noteAdded;
-      } catch (e) {
-        results['addNote'] = 'Expected error: $e';
-      }
+      final noteAdded = await merchant.customer.addNote(customerId: createResult.id, note: 'Test customer created via API');
+      results['addNote'] = noteAdded;
 
       // Get Customer Notes
-      try {
-        final notes = await merchant.customer.getNote(createResult.id);
-        results['getNotes'] = notes.map((e) => e.toJson()).toList();
-      } catch (e) {
-        results['getNotes'] = 'Expected error: $e';
-      }
+      final notes = await merchant.customer.getNote(createResult.id);
+      results['getNotes'] = notes.map((e) => e.toJson()).toList();
 
       // Get Customer Payments
-      try {
-        final payments = await merchant.customer.getPayments(customerId: createResult.id, offset: 0, limit: 10);
-        results['getCustomerPayments'] = payments.toJson();
-      } catch (e) {
-        results['getCustomerPayments'] = 'Expected error: $e';
-      }
+      final payments = await merchant.customer.getPayments(customerId: createResult.id, offset: 0, limit: 10);
+      results['getCustomerPayments'] = payments.toJson();
 
-      log(jsonEncode(results));
       _setResult(jsonEncode(results));
     } catch (e, s) {
       log("Customer flow failed: $e", stackTrace: s);

@@ -1,3 +1,5 @@
+import 'package:collection/collection.dart';
+
 import '../../utils/enums.dart';
 import 'create_customer_custom_field_model.dart';
 
@@ -117,5 +119,31 @@ class MxCreateCustomerRequestModel {
 
   Map<String, dynamic> toQueryJson() {
     return {'echo': true};
+  }
+
+  factory MxCreateCustomerRequestModel.fromJson(Map<String, dynamic> json) {
+    return MxCreateCustomerRequestModel(
+      name: json['name'] ?? '',
+      firstName: json['firstName'] ?? '',
+      lastName: json['lastName'],
+      address1: json['address1'],
+      address2: json['address2'],
+      city: json['city'],
+      state: json['state'],
+      zip: json['zip']?.toString(),
+      addressName: json['addressName'],
+      customerType: MxCustomerTypeEnum.values.firstWhereOrNull((e) => e.name == json['customerType']) ?? MxCustomerTypeEnum.person,
+      email: json['email'],
+      mobile: json['mobile']?.toString(),
+      phone: json['phone']?.toString(),
+      number: json['number']?.toString(),
+      isTaxExempt: bool.tryParse(json['isTaxExempt'].toString()) ?? false,
+      taxId: json['taxId']?.toString(),
+      spendProfile: json['spendProfile'],
+      customFields: json['customFields'] != null ? MxCustomerCustomFieldModel.fromJsonArray(json['customFields']) : null,
+      activeStatus: bool.tryParse(json['activeStatus'].toString()) ?? true,
+      selectedSpendProfile: json['selectedSpendProfile'],
+      spendProfileOverride: bool.tryParse(json['spendProfileOverride'].toString()) ?? false,
+    );
   }
 }

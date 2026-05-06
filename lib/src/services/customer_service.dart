@@ -30,12 +30,12 @@ abstract class MxCustomerService {
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/update-customer
-  Future<MxCreateCustomerResponseModel> update({required int customerId, required MxCreateCustomerRequestModel customerData}) async {
+  Future<bool> update({required int customerId, required MxCreateCustomerRequestModel customerData}) async {
     throw UnimplementedError();
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/create-a-customers-address
-  Future<List<MxCreateCustomerAddressResponseModel>> createAddress(MxCreateCustomerAddressRequestModel request) async {
+  Future<MxCreateCustomerAddressResponseModel> createAddress(MxCreateCustomerAddressRequestModel request) async {
     throw UnimplementedError();
   }
 
@@ -45,7 +45,7 @@ abstract class MxCustomerService {
   }
 
   /// The full documentation can be found here: https://developer.mxmerchant.com/reference/update-a-customers-address
-  Future<MxCreateCustomerAddressResponseModel> updateAddress(MxCreateCustomerAddressRequestModel request) async {
+  Future<bool> updateAddress(MxCreateCustomerAddressRequestModel request) async {
     throw UnimplementedError();
   }
 

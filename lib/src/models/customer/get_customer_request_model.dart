@@ -35,7 +35,7 @@ class MxGetCustomerRequestModel {
     this.startDate,
     this.endDate,
   }) : assert(limit >= 0, 'Limit must be greater than or equal to 0'),
-       assert(lastActivity == .custom && startDate != null && endDate != null, 'Custom time filter must have start and end dates');
+       assert(lastActivity != .custom || (startDate != null && endDate != null), 'Custom time filter must have start and end dates');
 
   Map<String, dynamic> toJson() {
     return {
